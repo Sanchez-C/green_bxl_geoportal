@@ -1,0 +1,22 @@
+// Importation des modules nécessaires
+const express = require('express');
+const path = require('path');
+
+// Création d'une instance d'Express
+const app = express();
+
+// Définir le port (par défaut 3000, mais Render utilisera son propre port)
+const port = process.env.PORT || 3000;
+
+// Servir les fichiers statiques
+app.use(express.static(path.join(__dirname, 'public'))); // 'public' est le dossier où tes fichiers HTML/CSS/JS sont stockés
+
+// Route pour tester
+app.get('/', (req, res) => {
+  res.send('Hello, World!');
+});
+
+// Lancer le serveur
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
