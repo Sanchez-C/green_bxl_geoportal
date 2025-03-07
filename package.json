@@ -25,6 +25,7 @@
   "homepage": "https://github.com/Sanchez-C/green_bxl_geoportal#readme",
   "dependencies": {
     "express": "^4.21.2",
-    "pg": "^8.13.3"
+    "pg": "^8.13.3",
+    "pg-promise": "^11.10.2"
   }
 }
