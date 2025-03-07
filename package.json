@@ -1,0 +1,31 @@
+{
+  "name": "green_bxl_package",
+  "version": "1.0.0",
+  "description": "Cartographic project about the environmental quality of Brussels",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sanchez-C/green_bxl_geoportal.git"
+  },
+  "keywords": [
+    "Brussels",
+    "environment",
+    "pollution",
+    "green",
+    "spaces"
+  ],
+  "author": "Sanchez Trenado Corentin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sanchez-C/green_bxl_geoportal/issues"
+  },
+  "homepage": "https://github.com/Sanchez-C/green_bxl_geoportal#readme",
+  "dependencies": {
+    "express": "^4.21.2",
+    "pg": "^8.13.3",
+    "pg-promise": "^11.10.2"
+  }
+}
