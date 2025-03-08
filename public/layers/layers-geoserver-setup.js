@@ -1,7 +1,5 @@
 var wms_layers = [];
 
-
-
 var lyr_base_map = new ol.layer.Tile({
                             source: new ol.source.TileWMS({
                               url: "http://localhost:8080/geoserver/wms",
@@ -364,27 +362,19 @@ var lyr_md_road_occ_morning = new ol.layer.Vector({
                           });
 
 var lyr_md_road_occ_evening = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    format: new ol.format.GeoJSON(),
-    strategy: ol.loadingstrategy.bbox,
-    loader: function(extent, resolution, projection) {
-      fetch('https://green-brussels.onrender.com/api/roads') // Mets ici ton URL Render
-        .then(response => response.json())
-        .then(data => {
-          var features = new ol.format.GeoJSON().readFeatures(data, {
-            dataProjection: 'EPSG:3857', // Adapter si nécessaire
-            featureProjection: projection.getCode()
-          });
-          lyr_md_road_occ_evening.getSource().clear();
-          lyr_md_road_occ_evening.getSource().addFeatures(features);
-        })
-        .catch(error => console.error('Erreur chargement GeoJSON:', error));
-    }
-  }),
-  style: style_md_road_occ_evening,
-  title: 'Taux d\'occupation de la voirie entre 17h et 18h',
-  opacity: 1.0
-});
+                            source: new ol.source.Vector({
+                              format: new ol.format.GeoJSON({
+                              }),
+                              strategy: ol.loadingstrategy.bbox,
+                              url: "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=green_brussels:md_road_occupancy&outputFormat=application/json&srsname=EPSG:3857"
+                            }),
+                            style: style_md_road_occ_evening,
+                            leg: 'leg_md_road_occ_evening',
+                            popuplayertitle: 'Occupation de la voirie (%)',
+                            interactive: true,
+                            title: 'Taux d\'occupation de la voirie entre 17h et 18h',
+                            opacity: 1.000000,
+                          }); 
 
 var lyr_search_layer = new ol.layer.Vector({
                             source: new ol.source.Vector({
