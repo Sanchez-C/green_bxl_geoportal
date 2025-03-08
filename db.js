@@ -1,3 +1,6 @@
+// Charger les variables d'environnement depuis le fichier .env
+require('dotenv').config();
+
 const { Client } = require('pg');
 
 const connectionOptions = {
