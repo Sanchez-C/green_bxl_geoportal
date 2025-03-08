@@ -1,6 +1,6 @@
 // Importation des modules nécessaires
-const express = require('express');
-const path = require('path');
+const express = require('express'); // Framework node.js
+const path = require('path'); // Pour gérer les chemins de fichiers
 const db = require('./db'); // Import du fichier de connexion à la BDD
 
 // Création d'une instance d'Express
@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
 // Route pour récupérer les données en GeoJSON
 app.get('/api/roads', async (req, res) => {
   try {
-    const result = await client.query(`
+    const result = await db.query(`
       SELECT json_build_object(
         'type', 'FeatureCollection',
         'features', json_agg(ST_AsGeoJSON(t.*)::json)

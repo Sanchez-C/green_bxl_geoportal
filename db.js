@@ -4,11 +4,11 @@ const connectionOptions = {
   connectionString: process.env.DB_URL
 };
 
-// Désactiver SSL si le serveur ne le supporte pas
-if (process.env.DB_DISABLE_SSL === 'true') {
-  connectionOptions.ssl = false;
-} else {
+// Désactiver SSL en local, mais le garder actif en production (si nécessaire)
+if (process.env.NODE_ENV === 'production') {
   connectionOptions.ssl = { rejectUnauthorized: false };
+} else {
+  connectionOptions.ssl = false; // Désactive SSL en local
 }
 
 // Création d'une instance de client PostgreSQL avec les variables d'environnement définies sur Render
