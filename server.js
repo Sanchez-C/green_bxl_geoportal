@@ -49,4 +49,5 @@ app.get('/api/roads', async (req, res) => {
 // Lancer le serveur
 app.listen(port, () => {
   console.log(`🚀 Serveur lancé sur le port ${port}`);
+  console.log('DB_URL:', process.env.DB_URL);
 });
