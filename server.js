@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 
 // Route pour récupérer les données en GeoJSON
 app.get('/api/road_occupancy', async (req, res) => {
-console.log('🔄 Requête reçue pour /api/roads');
+console.log('🔄 Requête reçue pour /api/road_occupancy');
   try {
     console.log("Tentative d'exécution de la requête SQL...");
     // Vérifier si la connexion est toujours active avant d'exécuter la requête
@@ -43,7 +43,7 @@ console.log('🔄 Requête reçue pour /api/roads');
         'type', 'FeatureCollection',
         'features', json_agg(ST_AsGeoJSON(t.*)::json)
       ) AS geojson
-      FROM vector.md_road_occupancy AS t;
+      FROM vector.md_road_occupancy2 AS t;
     `);
 
     if (!result || !result.rows || result.rows.length === 0) {

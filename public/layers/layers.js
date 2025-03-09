@@ -9,6 +9,7 @@ var lyr_base_map = new ol.layer.Tile({
                               params: {
                                 "LAYERS": "green_brussels:base_map",
                                 "TILED": "true",
+                                "SRS": "EPSG:31370",
                                 "VERSION": "1.3.0"},
                             }),
                             title: 'Fond de carte',
@@ -84,6 +85,7 @@ var lyr_health_air = new ol.layer.Tile({
                               params: {
                                 "LAYERS": "green_brussels:health_air",
                                 "TILED": "true",
+                                "SRS": "EPSG:3857",
                                 "VERSION": "1.3.0"},
                             }),
                             leg: 'leg_health',
@@ -288,20 +290,35 @@ var lyr_md_surfaces_veg = new ol.layer.Vector({
                             opacity: 1.000000,
                           });
 
+
 var lyr_md_densite = new ol.layer.Vector({
-                            source: new ol.source.Vector({
-                              format: new ol.format.GeoJSON({
-                              }),
-                              strategy: ol.loadingstrategy.bbox,
-                              url: "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=green_brussels:md_population&outputFormat=application/json&srsname=EPSG:3857"
-                            }),
-                            style: style_md_densite,
-                            leg: 'leg_md_densite',
-                            popuplayertitle: 'Densité (hab / km²)',
-                            interactive: true,
-                            title: 'Densité de population',
-                            opacity: 1.000000,
-                          });
+    source: new ol.source.Vector({
+        format: new ol.format.GeoJSON(),
+        strategy: ol.loadingstrategy.bbox,
+        loader: function (extent, resolution, projection) {
+            var url = "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
+                      "&request=GetFeature&typeName=green_brussels:md_population" +
+                      "&outputFormat=application/json&srsname=EPSG:3857";
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    var features = new ol.format.GeoJSON().readFeatures(data, {
+                        dataProjection: 'EPSG:3857', // Projection de GeoServer
+                        featureProjection: projection.getCode() // Projection de la carte OpenLayers
+                    });
+                    lyr_md_densite.getSource().addFeatures(features);
+                })
+                .catch(error => console.error('Erreur chargement WFS:', error));
+        }
+    }),
+    style: style_md_densite,
+    leg: 'leg_md_densite',
+    popuplayertitle: 'Densité (hab / km²)',
+    interactive: true,
+    title: 'Densité de population',
+    opacity: 1.0
+});
 
 var lyr_md_households_size = new ol.layer.Vector({
                             source: new ol.source.Vector({
@@ -323,7 +340,7 @@ var lyr_md_noise_lden = new ol.layer.Vector({
                               format: new ol.format.GeoJSON({
                               }),
                               strategy: ol.loadingstrategy.bbox,
-                              url: "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=green_brussels:md_noise&outputFormat=application/json&srsname=EPSG:3857",
+                              url: "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=green_brussels:md_noise&outputFormat=application/json&srsname=EPSG:3857"
                             }),
                             style: style_md_noise_lden,
                             leg: 'leg_md_noise_lden',
@@ -350,6 +367,107 @@ var lyr_md_noise_ln = new ol.layer.Vector({
 
 
 
+var lyr_md_road_occ_morning = new ol.layer.Vector({
+    source: new ol.source.Vector({
+        format: new ol.format.GeoJSON(),
+        strategy: ol.loadingstrategy.bbox,
+        loader: function (extent, resolution, projection) {
+          // Teste la disponibilité du service WFS
+          var apiUrl = "http://localhost:3000/api/road_occupancy";
+          var wfsUrl = "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
+                    "&request=GetFeature&typeName=green_brussels:md_road_occupancy" +
+                    "&outputFormat=application/json&srsname=EPSG:3857";  
+
+          // Fonction pour charger les données depuis l'API
+          function loadDataFromApi(url) {
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    var features = new ol.format.GeoJSON().readFeatures(data, {
+                        dataProjection: 'EPSG:3857',
+                        featureProjection: projection.getCode()
+                    });
+                    lyr_md_road_occ_morning.getSource().addFeatures(features);
+                })
+                .catch(error => console.error('Erreur chargement API:', error));
+          }
+
+          // Fonction pour tester si le WFS est disponible
+          function checkWfsAvailability(url) {
+            fetch(url, { method: 'HEAD' })  // On fait juste un HEAD pour vérifier la disponibilité
+                .then(response => {
+                    if (response.ok) {
+                        // Si WFS est disponible, on charge les données depuis le WFS
+                        fetchWfsData(url);
+                    } else {
+                        // Sinon, on charge les données depuis l'API
+                        loadDataFromApi(apiUrl);
+                    }
+                })
+                .catch(error => {
+                    // Si la requête échoue (service WFS non trouvé par exemple), on utilise l'API
+                    console.log('Service WFS non disponible, utilisation de l\'API');
+                    loadDataFromApi(apiUrl);
+                });
+          }
+
+          // Fonction pour charger les données depuis le WFS
+          function fetchWfsData(url) {
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    var features = new ol.format.GeoJSON().readFeatures(data, {
+                        dataProjection: 'EPSG:3857',
+                        featureProjection: projection.getCode()
+                    });
+                    lyr_md_road_occ_morning.getSource().addFeatures(features);
+                })
+                .catch(error => console.error('Erreur chargement WFS:', error));
+            }
+          
+          // Lancer la vérification de la disponibilité du service WFS
+          checkWfsAvailability(wfsUrl);
+        }
+    }),
+    style: style_md_road_occ_morning,
+    leg: 'leg_md_road_occ_morning',
+    popuplayertitle: 'Occupation de la voirie (%)',
+    interactive: true,
+    title: 'Taux d\'occupation de la voirie entre 8h et 9h',
+    opacity: 1.0
+});
+
+var lyr_md_road_occ_evening = new ol.layer.Vector({
+  source: new ol.source.Vector({
+      format: new ol.format.GeoJSON(),
+      strategy: ol.loadingstrategy.bbox,
+      loader: function (extent, resolution, projection) {
+        // Teste la disponibilité du service WFS
+        var apiUrl = "http://localhost:3000/api/road_occupancy";
+
+        // Fonction pour charger les données depuis l'API
+        function loadDataFromApi(url) {
+          fetch(url)
+              .then(response => response.json())
+              .then(data => {
+                  var features = new ol.format.GeoJSON().readFeatures(data, {
+                      dataProjection: 'EPSG:3857',
+                      featureProjection: projection.getCode()
+                  });
+                  lyr_md_road_occ_evening.getSource().addFeatures(features);
+              })
+              .catch(error => console.error('Erreur chargement API:', error));
+        }
+        loadDataFromApi(apiUrl);
+      }
+  }),
+  style: style_md_road_occ_evening,
+  leg: 'leg_md_road_occ_evening',
+  popuplayertitle: 'Occupation de la voirie (%)',
+  interactive: true,
+  title: 'Taux d\'occupation de la voirie entre 17h et 18h',
+  opacity: 1.0
+});
 
 var lyr_search_layer = new ol.layer.Vector({
                             source: new ol.source.Vector({
