@@ -19,7 +19,6 @@ console.log('🔌 Tentative de connexion...');
 client.connect()
   .then(() => {
     console.log('✅ Connexion réussie à PostgreSQL');
-    return client.end();
   })
   .catch(err => {
     console.error('❌ Erreur de connexion :', err);
