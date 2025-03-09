@@ -349,32 +349,62 @@ var lyr_md_noise_ln = new ol.layer.Vector({
                           });
 
 var lyr_md_road_occ_morning = new ol.layer.Vector({
-                            source: new ol.source.Vector({
-                              format: new ol.format.GeoJSON({
-                              }),
-                              strategy: ol.loadingstrategy.bbox,
-                              url: "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=green_brussels:md_road_occupancy&outputFormat=application/json&srsname=EPSG:3857"
-                            }),
-                            style: style_md_road_occ_morning,
-                            leg: 'leg_md_road_occ_morning',
-                            popuplayertitle: 'Occupation de la voirie (%)',
-                            interactive: true,
-                            title: 'Taux d\'occupation de la voirie entre 8h et 9h',
-                            opacity: 1.000000,
-                          });
+    source: new ol.source.Vector({
+        format: new ol.format.GeoJSON(),
+        strategy: ol.loadingstrategy.bbox,
+        loader: function (extent, resolution, projection) {
+            var url = "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
+                      "&request=GetFeature&typeName=green_brussels:md_road_occupancy" +
+                      "&outputFormat=application/json&srsname=EPSG:31370";
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    var features = new ol.format.GeoJSON().readFeatures(data, {
+                        dataProjection: 'EPSG:31370', // Projection de GeoServer
+                        featureProjection: projection.getCode() // Projection de la carte OpenLayers
+                    });
+                    lyr_md_road_occ_morning.getSource().addFeatures(features);
+                })
+                .catch(error => console.error('Erreur chargement WFS:', error));
+        }
+    }),
+    style: style_md_road_occ_morning,
+    leg: 'leg_md_road_occ_morning',
+    popuplayertitle: 'Occupation de la voirie (%)',
+    interactive: true,
+    title: 'Taux d\'occupation de la voirie entre 8h et 9h',
+    opacity: 1.0
+});
+
 
 var lyr_md_road_occ_evening = new ol.layer.Vector({
   source: new ol.source.Vector({
     format: new ol.format.GeoJSON(),
-    strategy: ol.loadingstrategy.bbox,
+    strategy: ol.loadingstrategy.all,
     loader: function(extent, resolution, projection) {
-      fetch('https://green-brussels.onrender.com/api/roads') // Mets ici ton URL Render
+      fetch('http://localhost:3000/api/roads') // Mets ici ton URL Render
         .then(response => response.json())
         .then(data => {
-          console.log(data);
+          console.log('Projection actuelle de la carte:', map.getView().getProjection().getCode());
           var features = new ol.format.GeoJSON().readFeatures(data, {
-            dataProjection: 'EPSG:31370', // Adapter si nécessaire
-            featureProjection: projection.getCode()
+            dataProjection: 'EPSG:31370', // Projection des données en entrée
+            featureProjection: 'EPSG:3857' // Projection de la carte OpenLayers (Web Mercator)
+          });
+          console.log('Features chargées:', features); // Ajoute cette ligne pour vérifier
+          // Vérification de la géométrie
+          features.forEach((feature, index) => {
+            if (!feature.getGeometry()) {
+              console.warn(`⚠️ Feature ${index} n'a pas de géométrie`, feature);
+            } else {
+              console.log(`✅ Feature ${index} OK, type:`, feature.getGeometry().getType());
+            }
+          });
+          features.forEach((feature, index) => {
+            const geom = feature.getGeometry();
+            if (geom) {
+              console.log(`Feature ${index} coords:`, geom.getCoordinates());
+            }
           });
           lyr_md_road_occ_evening.getSource().clear();
           lyr_md_road_occ_evening.getSource().addFeatures(features);
@@ -384,6 +414,9 @@ var lyr_md_road_occ_evening = new ol.layer.Vector({
     }
   }),
   style: style_md_road_occ_evening,
+  leg: 'leg_md_road_occ_evening',
+  popuplayertitle: 'Occupation de la voirie (%)',
+  interactive: true,
   title: 'Taux d\'occupation de la voirie entre 17h et 18h',
   opacity: 1.0
 });
