@@ -9,7 +9,6 @@ var lyr_base_map = new ol.layer.Tile({
                               params: {
                                 "LAYERS": "green_brussels:base_map",
                                 "TILED": "true",
-                                "SRS": "EPSG:31370",
                                 "VERSION": "1.3.0"},
                             }),
                             title: 'Fond de carte',

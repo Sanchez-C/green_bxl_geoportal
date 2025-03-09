@@ -1,8 +1,3 @@
-// Définir et enregistrer la projection EPSG:31370 (Lambert belge)
-proj4.defs("EPSG:31370", "+proj=lcc +lat_1=49.833333900000014 +lat_2=51.16666723333333 +lat_0=90 +lon_0=4.367486666666666 +k_0=1.0 +x_0=150000.013 +y_0=5400088.438 +ellps=intl +towgs84=-106.8686,52.2978,-103.7239,0.3366,0.457,-1.8422,-1.2747 +units=m +no_defs");
-ol.proj.proj4.register(proj4);
-ol.proj.get("EPSG:31370").setExtent([141108.5625, 161381, 158087.921875, 178259.3125]);
-
 var map = new ol.Map({
     target: 'map',
     renderer: 'canvas',
