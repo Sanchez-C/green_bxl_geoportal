@@ -375,8 +375,9 @@ var lyr_md_road_occ_evening = new ol.layer.Vector({
             dataProjection: 'EPSG:3857', // Adapter si nécessaire
             featureProjection: projection.getCode()
           });
-          lyr_md_road_occ_evening.getSource().clear();
           lyr_md_road_occ_evening.getSource().addFeatures(features);
+          lyr_md_road_occ_evening.getSource().clear();
+
         })
         .catch(error => console.error('Erreur chargement GeoJSON:', error));
     }
