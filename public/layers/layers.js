@@ -371,13 +371,14 @@ var lyr_md_road_occ_evening = new ol.layer.Vector({
       fetch('https://green-brussels.onrender.com/api/roads') // Mets ici ton URL Render
         .then(response => response.json())
         .then(data => {
+          console.log(data);
           var features = new ol.format.GeoJSON().readFeatures(data, {
             dataProjection: 'EPSG:3857', // Adapter si nécessaire
             featureProjection: projection.getCode()
           });
-          lyr_md_road_occ_evening.getSource().addFeatures(features);
           lyr_md_road_occ_evening.getSource().clear();
-
+          lyr_md_road_occ_evening.getSource().addFeatures(features);
+          console.log('Nombre de features chargées:', features.length);
         })
         .catch(error => console.error('Erreur chargement GeoJSON:', error));
     }
