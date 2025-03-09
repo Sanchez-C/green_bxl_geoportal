@@ -373,7 +373,7 @@ var lyr_md_road_occ_evening = new ol.layer.Vector({
         .then(data => {
           console.log(data);
           var features = new ol.format.GeoJSON().readFeatures(data, {
-            dataProjection: 'EPSG:3857', // Adapter si nécessaire
+            dataProjection: 'EPSG:31370', // Adapter si nécessaire
             featureProjection: projection.getCode()
           });
           lyr_md_road_occ_evening.getSource().clear();
