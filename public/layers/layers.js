@@ -353,20 +353,61 @@ var lyr_md_road_occ_morning = new ol.layer.Vector({
         format: new ol.format.GeoJSON(),
         strategy: ol.loadingstrategy.bbox,
         loader: function (extent, resolution, projection) {
-            var url = "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
-                      "&request=GetFeature&typeName=green_brussels:md_road_occupancy" +
-                      "&outputFormat=application/json&srsname=EPSG:31370";
-            
+          // Teste la disponibilité du service WFS
+          var apiUrl = "http://localhost:3000/api/road_occupancy";
+          var wfsUrl = "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
+                    "&request=GetFeature&typeName=green_brussels:md_road_occupancy" +
+                    "&outputFormat=application/json&srsname=EPSG:3857";  
+
+          // Fonction pour charger les données depuis l'API
+          function loadDataFromApi(url) {
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     var features = new ol.format.GeoJSON().readFeatures(data, {
-                        dataProjection: 'EPSG:31370', // Projection de GeoServer
-                        featureProjection: projection.getCode() // Projection de la carte OpenLayers
+                        dataProjection: 'EPSG:31370',
+                        featureProjection: projection.getCode()
+                    });
+                    lyr_md_road_occ_morning.getSource().addFeatures(features);
+                })
+                .catch(error => console.error('Erreur chargement API:', error));
+          }
+
+          // Fonction pour tester si le WFS est disponible
+          function checkWfsAvailability(url) {
+            fetch(url, { method: 'HEAD' })  // On fait juste un HEAD pour vérifier la disponibilité
+                .then(response => {
+                    if (response.ok) {
+                        // Si WFS est disponible, on charge les données depuis le WFS
+                        fetchWfsData(url);
+                    } else {
+                        // Sinon, on charge les données depuis l'API
+                        loadDataFromApi(apiUrl);
+                    }
+                })
+                .catch(error => {
+                    // Si la requête échoue (service WFS non trouvé par exemple), on utilise l'API
+                    console.log('Service WFS non disponible, utilisation de l\'API');
+                    loadDataFromApi(apiUrl);
+                });
+          }
+
+          // Fonction pour charger les données depuis le WFS
+          function fetchWfsData(url) {
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    var features = new ol.format.GeoJSON().readFeatures(data, {
+                        dataProjection: 'EPSG:3857',
+                        featureProjection: projection.getCode()
                     });
                     lyr_md_road_occ_morning.getSource().addFeatures(features);
                 })
                 .catch(error => console.error('Erreur chargement WFS:', error));
+            }
+          
+          // Lancer la vérification de la disponibilité du service WFS
+          checkWfsAvailability(wfsUrl);
         }
     }),
     style: style_md_road_occ_morning,
@@ -377,34 +418,17 @@ var lyr_md_road_occ_morning = new ol.layer.Vector({
     opacity: 1.0
 });
 
-
 var lyr_md_road_occ_evening = new ol.layer.Vector({
   source: new ol.source.Vector({
     format: new ol.format.GeoJSON(),
-    strategy: ol.loadingstrategy.all,
+    strategy: ol.loadingstrategy.bbox,
     loader: function(extent, resolution, projection) {
-      fetch('http://localhost:3000/api/roads') // Mets ici ton URL Render
+      fetch('http://localhost:3000/api/road_occupancy') // Mets ici ton URL Render
         .then(response => response.json())
         .then(data => {
-          console.log('Projection actuelle de la carte:', map.getView().getProjection().getCode());
           var features = new ol.format.GeoJSON().readFeatures(data, {
             dataProjection: 'EPSG:31370', // Projection des données en entrée
-            featureProjection: 'EPSG:3857' // Projection de la carte OpenLayers (Web Mercator)
-          });
-          console.log('Features chargées:', features); // Ajoute cette ligne pour vérifier
-          // Vérification de la géométrie
-          features.forEach((feature, index) => {
-            if (!feature.getGeometry()) {
-              console.warn(`⚠️ Feature ${index} n'a pas de géométrie`, feature);
-            } else {
-              console.log(`✅ Feature ${index} OK, type:`, feature.getGeometry().getType());
-            }
-          });
-          features.forEach((feature, index) => {
-            const geom = feature.getGeometry();
-            if (geom) {
-              console.log(`Feature ${index} coords:`, geom.getCoordinates());
-            }
+            featureProjection: projection.getCode() // Projection de la carte OpenLayers ESPG:3857
           });
           lyr_md_road_occ_evening.getSource().clear();
           lyr_md_road_occ_evening.getSource().addFeatures(features);

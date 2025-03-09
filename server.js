@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 });
 
 // Route pour récupérer les données en GeoJSON
-app.get('/api/roads', async (req, res) => {
+app.get('/api/road_occupancy', async (req, res) => {
 console.log('🔄 Requête reçue pour /api/roads');
   try {
     console.log("Tentative d'exécution de la requête SQL...");
