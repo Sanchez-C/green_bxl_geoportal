@@ -1,12 +1,12 @@
-var lyr_md_road_occ_morning = new ol.layer.Vector({
+var lyr_lyr_md_noise_ln = new ol.layer.Vector({
     source: new ol.source.Vector({
         format: new ol.format.GeoJSON(),
         strategy: ol.loadingstrategy.bbox,
         loader: function (extent, resolution, projection) {
           // Teste la disponibilité du service WFS
-          var apiUrl = "http://localhost:3000/api/road_occupancy";
+          var apiUrl = "http://localhost:3000/api/noise";
           var wfsUrl = "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
-                    "&request=GetFeature&typeName=green_brussels:md_road_occupancy" +
+                    "&request=GetFeature&typeName=green_brussels:md_noise" +
                     "&outputFormat=application/json&srsname=EPSG:3857";  
 
           // Fonction pour charger les données depuis l'API
@@ -18,7 +18,7 @@ var lyr_md_road_occ_morning = new ol.layer.Vector({
                         dataProjection: 'EPSG:3857',
                         featureProjection: projection.getCode()
                     });
-                    lyr_md_road_occ_morning.getSource().addFeatures(features);
+                    lyr_lyr_md_noise_ln.getSource().addFeatures(features);
                 })
                 .catch(error => console.error('Erreur chargement API:', error));
           }
@@ -51,7 +51,7 @@ var lyr_md_road_occ_morning = new ol.layer.Vector({
                         dataProjection: 'EPSG:3857',
                         featureProjection: projection.getCode()
                     });
-                    lyr_md_road_occ_morning.getSource().addFeatures(features);
+                    lyr_lyr_md_noise_ln.getSource().addFeatures(features);
                 })
                 .catch(error => console.error('Erreur chargement WFS:', error));
             }
@@ -60,8 +60,8 @@ var lyr_md_road_occ_morning = new ol.layer.Vector({
           checkWfsAvailability(wfsUrl);
         }
     }),
-    style: style_md_road_occ_morning,
-    leg: 'leg_md_road_occ_morning',
+    style: style_md_noise_ln,
+    leg: 'leg_md_noise_ln',
     popuplayertitle: 'Occupation de la voirie (%)',
     interactive: true,
     title: 'Taux d\'occupation de la voirie entre 8h et 9h',

@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
 
-// Route pour récupérer les données en GeoJSON
+// Route pour récupérer les données en GeoJSON de md_road_occupancy
 app.get('/api/road_occupancy', async (req, res) => {
 console.log('🔄 Requête reçue pour /api/road_occupancy');
   try {
@@ -43,7 +43,38 @@ console.log('🔄 Requête reçue pour /api/road_occupancy');
         'type', 'FeatureCollection',
         'features', json_agg(ST_AsGeoJSON(t.*)::json)
       ) AS geojson
-      FROM vector.md_road_occupancy2 AS t;
+      FROM vector.md_road_occupancy AS t;
+    `);
+
+    if (!result || !result.rows || result.rows.length === 0) {
+      console.error("Aucune donnée trouvée !");
+      return res.status(404).json({ error: 'Aucune donnée disponible' });
+    }
+
+    console.log("Données récupérées avec succès !");
+    res.json(result.rows[0].geojson);
+  } catch (error) {
+    console.error('Erreur lors de la récupération des données:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Route pour récupérer les données en GeoJSON de md_noise
+app.get('/api/road_occupancy', async (req, res) => {
+console.log('🔄 Requête reçue pour /api/noise');
+  try {
+    console.log("Tentative d'exécution de la requête SQL...");
+    // Vérifier si la connexion est toujours active avant d'exécuter la requête
+    if (db._connected === false) {
+      console.log('⚠️ La connexion à la base de données est fermée. On la réouvre...');
+      await db.connect(); // Réouvre la connexion si elle est fermée
+    }
+    const result = await db.query(`
+      SELECT json_build_object(
+        'type', 'FeatureCollection',
+        'features', json_agg(ST_AsGeoJSON(t.*)::json)
+      ) AS geojson
+      FROM vector.md_noise AS t;
     `);
 
     if (!result || !result.rows || result.rows.length === 0) {
