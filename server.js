@@ -60,7 +60,7 @@ console.log('🔄 Requête reçue pour /api/road_occupancy');
 });
 
 // Route pour récupérer les données en GeoJSON de md_noise
-app.get('/api/road_occupancy', async (req, res) => {
+app.get('/api/noise', async (req, res) => {
 console.log('🔄 Requête reçue pour /api/noise');
   try {
     console.log("Tentative d'exécution de la requête SQL...");
@@ -89,6 +89,68 @@ console.log('🔄 Requête reçue pour /api/noise');
     res.status(500).json({ error: error.message });
   }
 });
+
+// Route pour récupérer les données en GeoJSON de md_population
+app.get('/api/population', async (req, res) => {
+  console.log('🔄 Requête reçue pour /api/population');
+    try {
+      console.log("Tentative d'exécution de la requête SQL...");
+      // Vérifier si la connexion est toujours active avant d'exécuter la requête
+      if (db._connected === false) {
+        console.log('⚠️ La connexion à la base de données est fermée. On la réouvre...');
+        await db.connect(); // Réouvre la connexion si elle est fermée
+      }
+      const result = await db.query(`
+        SELECT json_build_object(
+          'type', 'FeatureCollection',
+          'features', json_agg(ST_AsGeoJSON(t.*)::json)
+        ) AS geojson
+        FROM vector.md_population AS t;
+      `);
+  
+      if (!result || !result.rows || result.rows.length === 0) {
+        console.error("Aucune donnée trouvée !");
+        return res.status(404).json({ error: 'Aucune donnée disponible' });
+      }
+  
+      console.log("Données récupérées avec succès !");
+      res.json(result.rows[0].geojson);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données:', error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+// Route pour récupérer les données en GeoJSON de md_population
+app.get('/api/green_spaces', async (req, res) => {
+  console.log('🔄 Requête reçue pour /api/green_spaces');
+    try {
+      console.log("Tentative d'exécution de la requête SQL...");
+      // Vérifier si la connexion est toujours active avant d'exécuter la requête
+      if (db._connected === false) {
+        console.log('⚠️ La connexion à la base de données est fermée. On la réouvre...');
+        await db.connect(); // Réouvre la connexion si elle est fermée
+      }
+      const result = await db.query(`
+        SELECT json_build_object(
+          'type', 'FeatureCollection',
+          'features', json_agg(ST_AsGeoJSON(t.*)::json)
+        ) AS geojson
+        FROM vector.md_green_spaces AS t;
+      `);
+  
+      if (!result || !result.rows || result.rows.length === 0) {
+        console.error("Aucune donnée trouvée !");
+        return res.status(404).json({ error: 'Aucune donnée disponible' });
+      }
+  
+      console.log("Données récupérées avec succès !");
+      res.json(result.rows[0].geojson);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données:', error);
+      res.status(500).json({ error: error.message });
+    }
+  });
 
 // Lancer le serveur
 app.listen(port, () => {

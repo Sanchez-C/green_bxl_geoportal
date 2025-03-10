@@ -4,7 +4,7 @@ const lyr_md_road_occ_morning = new ol.layer.Vector({
         strategy: ol.loadingstrategy.bbox,
         loader: function (extent, resolution, projection) {
           // Teste la disponibilité du service WFS
-          var apiUrl = "http://localhost:3000/api/road_occupancy";
+          var apiUrl = "https://green-brussels.onrender.com/api/road_occupancy";
           var wfsUrl = "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
                     "&request=GetFeature&typeName=green_brussels:md_road_occupancy" +
                     "&outputFormat=application/json&srsname=EPSG:3857";  
@@ -74,7 +74,7 @@ const lyr_md_road_occ_evening = new ol.layer.Vector({
         strategy: ol.loadingstrategy.bbox,
         loader: function (extent, resolution, projection) {
           // Teste la disponibilité du service WFS
-          var apiUrl = "http://localhost:3000/api/road_occupancy";
+          var apiUrl = "https://green-brussels.onrender.com/api/road_occupancy";
           var wfsUrl = "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
                     "&request=GetFeature&typeName=green_brussels:md_road_occupancy" +
                     "&outputFormat=application/json&srsname=EPSG:3857";  

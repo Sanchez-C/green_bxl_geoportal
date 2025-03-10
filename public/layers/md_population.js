@@ -1,12 +1,12 @@
-const lyr_md_noise_lden = new ol.layer.Vector({
+const lyr_md_densite= new ol.layer.Vector({
     source: new ol.source.Vector({
         format: new ol.format.GeoJSON(),
         strategy: ol.loadingstrategy.bbox,
         loader: function (extent, resolution, projection) {
           // Teste la disponibilité du service WFS
-          var apiUrl = "https://green-brussels.onrender.com/api/noise";
+          var apiUrl = "https://green-brussels.onrender.com/api/population";
           var wfsUrl = "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
-                    "&request=GetFeature&typeName=green_brussels:md_noise" +
+                    "&request=GetFeature&typeName=green_brussels:md_population" +
                     "&outputFormat=application/json&srsname=EPSG:3857";  
 
           // Fonction pour charger les données depuis l'API
@@ -18,7 +18,7 @@ const lyr_md_noise_lden = new ol.layer.Vector({
                         dataProjection: 'EPSG:3857',
                         featureProjection: projection.getCode()
                     });
-                    lyr_md_noise_lden.getSource().addFeatures(features);
+                    lyr_md_densite.getSource().addFeatures(features);
                 })
                 .catch(error => console.error('Erreur chargement API:', error));
           }
@@ -51,7 +51,7 @@ const lyr_md_noise_lden = new ol.layer.Vector({
                         dataProjection: 'EPSG:3857',
                         featureProjection: projection.getCode()
                     });
-                    lyr_md_noise_lden.getSource().addFeatures(features);
+                    lyr_md_densite.getSource().addFeatures(features);
                 })
                 .catch(error => console.error('Erreur chargement WFS:', error));
             }
@@ -60,23 +60,23 @@ const lyr_md_noise_lden = new ol.layer.Vector({
           checkWfsAvailability(wfsUrl);
         }
     }),
-    style: style_md_noise_lden,
-    leg: 'leg_md_noise_lden',
-    popuplayertitle: 'Bruit (db)',
+    style: style_md_densite,
+    leg: 'leg_md_densite',
+    popuplayertitle: 'Densité (hab / km²)',
     interactive: true,
-    title: 'Pollution sonore (lden)',
+    title: 'Densité de population',
     opacity: 1.0
 });
 
-const lyr_md_noise_ln = new ol.layer.Vector({
+const lyr_md_households_size = new ol.layer.Vector({
     source: new ol.source.Vector({
         format: new ol.format.GeoJSON(),
         strategy: ol.loadingstrategy.bbox,
         loader: function (extent, resolution, projection) {
           // Teste la disponibilité du service WFS
-          var apiUrl = "https://green-brussels.onrender.com/api/noise";
+          var apiUrl = "https://green-brussels.onrender.com/api/population";
           var wfsUrl = "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
-                    "&request=GetFeature&typeName=green_brussels:md_noise" +
+                    "&request=GetFeature&typeName=green_brussels:md_population" +
                     "&outputFormat=application/json&srsname=EPSG:3857";  
 
           // Fonction pour charger les données depuis l'API
@@ -88,7 +88,7 @@ const lyr_md_noise_ln = new ol.layer.Vector({
                         dataProjection: 'EPSG:3857',
                         featureProjection: projection.getCode()
                     });
-                    lyr_md_noise_ln.getSource().addFeatures(features);
+                    lyr_md_households_size.getSource().addFeatures(features);
                 })
                 .catch(error => console.error('Erreur chargement API:', error));
           }
@@ -121,7 +121,7 @@ const lyr_md_noise_ln = new ol.layer.Vector({
                         dataProjection: 'EPSG:3857',
                         featureProjection: projection.getCode()
                     });
-                    lyr_md_noise_ln.getSource().addFeatures(features);
+                    lyr_md_households_size.getSource().addFeatures(features);
                 })
                 .catch(error => console.error('Erreur chargement WFS:', error));
             }
@@ -130,10 +130,10 @@ const lyr_md_noise_ln = new ol.layer.Vector({
           checkWfsAvailability(wfsUrl);
         }
     }),
-    style: style_md_noise_ln,
-    leg: 'leg_md_noise_ln',
-    popuplayertitle: 'Bruit (db)',
+    style: style_md_households_size,
+    leg: 'leg_md_households_size',
+    popuplayertitle: 'Taille des ménages',
     interactive: true,
-    title: 'Pollution sonore (ln)',
-    opacity: 1.0
+    title: 'Taille moyenne des ménages',
+    opacity: 1.000000,
 });
