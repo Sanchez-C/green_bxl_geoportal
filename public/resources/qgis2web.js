@@ -1059,7 +1059,7 @@ function updateLegend(layer) {
                 case 'leg_md_road_occ_morning':
                     legendHTML = `
                         <h4>Occupation de la voirie - matin (%)</h4>
-                        <div class="leg_item"><img src="styles/legend/md_road_occ_morning_0.png"/><p>N/A ou routes < 500m</p></div>
+                        <div class="leg_item"><img src="styles/legend/md_road_occ_morning_0.png"/><p>< 500m de routes</p></div>
                         <div class="leg_item"><img src="styles/legend/md_road_occ_morning_1.png"/><p>21-34</p></div>
                         <div class="leg_item"><img src="styles/legend/md_road_occ_morning_2.png"/><p>34-44</p></div>
                         <div class="leg_item"><img src="styles/legend/md_road_occ_morning_3.png"/><p>44-53</p></div>
@@ -1070,7 +1070,7 @@ function updateLegend(layer) {
                 case 'leg_md_road_occ_evening':
                     legendHTML = `
                         <h4>Occupation de la voirie - soir (%)</h4>
-                        <div class="leg_item"><img src="styles/legend/md_road_occ_evening_0.png"/><p>N/A ou routes < 500m</p></div>
+                        <div class="leg_item"><img src="styles/legend/md_road_occ_evening_0.png"/><p>< 500m de routes</p></div>
                         <div class="leg_item"><img src="styles/legend/md_road_occ_evening_1.png"/><p>21-34</p></div>
                         <div class="leg_item"><img src="styles/legend/md_road_occ_evening_2.png"/><p>34-44</p></div>
                         <div class="leg_item"><img src="styles/legend/md_road_occ_evening_3.png"/><p>44-53</p></div>

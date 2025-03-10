@@ -28,7 +28,7 @@ var style_md_road_occ_morning = function(feature, resolution){
             // Start of if blocks and style check logic
             if (exp_md_road_occ_morning_rule0_eval_expression(context)) {
                       return [ new ol.style.Style({
-        fill: new ol.style.Fill({color: 'rgba(179,179,179,0.8980392156862745)'}),
+        fill: new ol.style.Fill({color: 'rgba(179,179,179)'}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
                               bufferWidth)

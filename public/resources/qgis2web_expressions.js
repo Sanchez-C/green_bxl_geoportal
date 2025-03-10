@@ -1104,66 +1104,66 @@ function exp_md_households_size_rule6_eval_expression(context) {
 
 
 function exp_md_densite_rule0_eval_expression(context) {
-    // "densite" > 0 AND "densite" <= 3.4544
+    // "densite" > 0 AND "densite" <= 3454.399903
 
     var feature = context.feature;
     
     if (feature.properties) {
-        return ((feature.get('densite')  > 0) && (feature.get('densite')  <= 3.4544));
+        return ((feature.get('densite')  > 0) && (feature.get('densite')  <= 3454.399903));
     } else {
-        return ((feature.get('densite')  > 0) && (feature.get('densite')  <= 3.4544));
+        return ((feature.get('densite')  > 0) && (feature.get('densite')  <= 3454.399903));
     }
 }
 
 
 function exp_md_densite_rule1_eval_expression(context) {
-    // "densite" > 3.4544 AND "densite" <= 8.8538
+    // "densite" > 3454.399903 AND "densite" <= 8853.800528
 
     var feature = context.feature;
     
     if (feature.properties) {
-        return ((feature.get('densite')  > 3.4544) && (feature.get('densite')  <= 8.8538));
+        return ((feature.get('densite')  > 3454.399903) && (feature.get('densite')  <= 8853.800528));
     } else {
-        return ((feature.get('densite')  > 3.4544) && (feature.get('densite')  <= 8.8538));
+        return ((feature.get('densite')  > 3454.399903) && (feature.get('densite')  <= 8853.800528));
     }
 }
 
 
 function exp_md_densite_rule2_eval_expression(context) {
-    // "densite" > 8.8538 AND "densite" <= 15.1649
+    // "densite" > 8853.800528 AND "densite" <= 15164.902524
 
     var feature = context.feature;
     
     if (feature.properties) {
-        return ((feature.get('densite')  > 8.8538) && (feature.get('densite')  <= 15.1649));
+        return ((feature.get('densite')  > 8853.800528) && (feature.get('densite')  <= 15164.902524));
     } else {
-        return ((feature.get('densite')  > 8.8538) && (feature.get('densite')  <= 15.1649));
+        return ((feature.get('densite')  > 8853.800528) && (feature.get('densite')  <= 15164.902524));
     }
 }
 
 
 function exp_md_densite_rule3_eval_expression(context) {
-    // "densite" > 15.1649 AND "densite" <= 20.9955
+    // "densite" > 15164.902524 AND "densite" <= 20995.489315
 
     var feature = context.feature;
     
     if (feature.properties) {
-        return ((feature.get('densite')  > 15.1649) && (feature.get('densite')  <= 20.9955));
+        return ((feature.get('densite')  > 15164.902524) && (feature.get('densite')  <= 20995.489315));
     } else {
-        return ((feature.get('densite')  > 15.1649) && (feature.get('densite')  <= 20.9955));
+        return ((feature.get('densite')  > 15164.902524) && (feature.get('densite')  <= 20995.489315));
     }
 }
 
 
 function exp_md_densite_rule4_eval_expression(context) {
-    // "densite" > 20.9955 AND "densite" <= 34.7622
+    // "densite" > 20995.489315 AND "densite" <= 34762.150052
 
     var feature = context.feature;
     
     if (feature.properties) {
-        return ((feature.get('densite')  > 20.9955) && (feature.get('densite')  <= 34.7622));
+        return ((feature.get('densite')  > 20995.489315) && (feature.get('densite')  <= 34762.150052));
     } else {
-        return ((feature.get('densite')  > 20.9955) && (feature.get('densite')  <= 34.7622));
+        return ((feature.get('densite')  > 20995.489315) && (feature.get('densite')  <= 34762.150052));
     }
 }
 
