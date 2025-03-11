@@ -765,97 +765,6 @@ function fnc_project_color(values, context) {
 };
 
 
-function exp_public_green_spaces_rule0_eval_expression(context) {
-    // "subtype_fr" = 'Associé à la voirie'
-
-    var feature = context.feature;
-    
-    if (feature.properties) {
-        return (feature.get('subtype_fr')  == 'Associé à la voirie');
-    } else {
-        return (feature.get('subtype_fr')  == 'Associé à la voirie');
-    }
-}
-
-
-function exp_public_green_spaces_rule1_eval_expression(context) {
-    // "subtype_fr" = 'Bois'
-
-    var feature = context.feature;
-    
-    if (feature.properties) {
-        return (feature.get('subtype_fr')  == 'Bois');
-    } else {
-        return (feature.get('subtype_fr')  == 'Bois');
-    }
-}
-
-
-function exp_public_green_spaces_rule2_eval_expression(context) {
-    // "subtype_fr" = 'Cimetière'
-
-    var feature = context.feature;
-    
-    if (feature.properties) {
-        return (feature.get('subtype_fr')  == 'Cimetière');
-    } else {
-        return (feature.get('subtype_fr')  == 'Cimetière');
-    }
-}
-
-
-function exp_public_green_spaces_rule3_eval_expression(context) {
-    // "subtype_fr" = 'Etang et berge en milieu urbain'
-
-    var feature = context.feature;
-    
-    if (feature.properties) {
-        return (feature.get('subtype_fr')  == 'Etang et berge en milieu urbain');
-    } else {
-        return (feature.get('subtype_fr')  == 'Etang et berge en milieu urbain');
-    }
-}
-
-
-function exp_public_green_spaces_rule4_eval_expression(context) {
-    // "subtype_fr" = 'N/A'
-
-    var feature = context.feature;
-    
-    if (feature.properties) {
-        return (feature.get('subtype_fr')  == 'N/A');
-    } else {
-        return (feature.get('subtype_fr')  == 'N/A');
-    }
-}
-
-
-function exp_public_green_spaces_rule5_eval_expression(context) {
-    // "subtype_fr" = 'Non-aménagé'
-
-    var feature = context.feature;
-    
-    if (feature.properties) {
-        return (feature.get('subtype_fr')  == 'Non-aménagé');
-    } else {
-        return (feature.get('subtype_fr')  == 'Non-aménagé');
-    }
-}
-
-
-function exp_public_green_spaces_rule6_eval_expression(context) {
-    // "subtype_fr" = 'Parc et square'
-
-    var feature = context.feature;
-    
-    if (feature.properties) {
-        return (feature.get('subtype_fr')  == 'Parc et square');
-    } else {
-        return (feature.get('subtype_fr')  == 'Parc et square');
-    }
-}
-
-
 function exp_md_road_occ_morning_rule0_eval_expression(context) {
     // "morning" < 0
 
@@ -1591,5 +1500,213 @@ function exp_md_gardens_rel_rule5_eval_expression(context) {
         return ((feature.get('gardens_rel')  > 66.87) && (feature.get('gardens_rel')  <= 91.44));
     } else {
         return ((feature.get('gardens_rel')  > 66.87) && (feature.get('gardens_rel')  <= 91.44));
+    }
+}
+
+
+function exp_bmap_blocks_desc_rule0_eval_expression(context) {
+    // "type_name" = 'CEMETERY'
+
+    var feature = context.feature;
+    
+    if (feature.properties) {
+        return (feature.get('type_name')  == 'CEMETERY');
+    } else {
+        return (feature.get('type_name')  == 'CEMETERY');
+    }
+}
+
+
+function exp_bmap_blocks_desc_rule1_eval_expression(context) {
+    // "type_name" = 'CONVENTIONAL BLOCK'
+
+    var feature = context.feature;
+    
+    if (feature.properties) {
+        return (feature.get('type_name')  == 'CONVENTIONAL BLOCK');
+    } else {
+        return (feature.get('type_name')  == 'CONVENTIONAL BLOCK');
+    }
+}
+
+
+function exp_bmap_blocks_desc_rule2_eval_expression(context) {
+    // "type_name" = 'FOREST'
+
+    var feature = context.feature;
+    
+    if (feature.properties) {
+        return (feature.get('type_name')  == 'FOREST');
+    } else {
+        return (feature.get('type_name')  == 'FOREST');
+    }
+}
+
+
+function exp_bmap_blocks_desc_rule3_eval_expression(context) {
+    // "type_name" = 'GREEN BLOCK'
+
+    var feature = context.feature;
+    
+    if (feature.properties) {
+        return (feature.get('type_name')  == 'GREEN BLOCK');
+    } else {
+        return (feature.get('type_name')  == 'GREEN BLOCK');
+    }
+}
+
+
+function exp_bmap_blocks_desc_rule4_eval_expression(context) {
+    // "type_name" = 'RAIL BLOCK'
+
+    var feature = context.feature;
+    
+    if (feature.properties) {
+        return (feature.get('type_name')  == 'RAIL BLOCK');
+    } else {
+        return (feature.get('type_name')  == 'RAIL BLOCK');
+    }
+}
+
+
+function exp_bmap_blocks_desc_rule5_eval_expression(context) {
+    // "type_name" = 'TUBE BLOCK'
+
+    var feature = context.feature;
+    
+    if (feature.properties) {
+        return (feature.get('type_name')  == 'TUBE BLOCK');
+    } else {
+        return (feature.get('type_name')  == 'TUBE BLOCK');
+    }
+}
+
+
+function exp_bmap_blocks_desc_rule6_eval_expression(context) {
+    // "type_name" = 'WATER BLOCK'
+
+    var feature = context.feature;
+    
+    if (feature.properties) {
+        return (feature.get('type_name')  == 'WATER BLOCK');
+    } else {
+        return (feature.get('type_name')  == 'WATER BLOCK');
+    }
+}
+
+
+function exp_bmap_public_green_spaces_rule0_eval_expression(context) {
+    // "subtype_fr" = 'Associé à la voirie'
+
+    var feature = context.feature;
+    
+    if (feature.properties) {
+        return (feature.get('subtype_fr')  == 'Associé à la voirie');
+    } else {
+        return (feature.get('subtype_fr')  == 'Associé à la voirie');
+    }
+}
+
+
+function exp_bmap_public_green_spaces_rule1_eval_expression(context) {
+    // "subtype_fr" = 'Bois'
+
+    var feature = context.feature;
+    
+    if (feature.properties) {
+        return (feature.get('subtype_fr')  == 'Bois');
+    } else {
+        return (feature.get('subtype_fr')  == 'Bois');
+    }
+}
+
+
+function exp_bmap_public_green_spaces_rule2_eval_expression(context) {
+    // "subtype_fr" = 'Cimetière'
+
+    var feature = context.feature;
+    
+    if (feature.properties) {
+        return (feature.get('subtype_fr')  == 'Cimetière');
+    } else {
+        return (feature.get('subtype_fr')  == 'Cimetière');
+    }
+}
+
+
+function exp_bmap_public_green_spaces_rule3_eval_expression(context) {
+    // "subtype_fr" = 'Etang et berge en milieu urbain'
+
+    var feature = context.feature;
+    
+    if (feature.properties) {
+        return (feature.get('subtype_fr')  == 'Etang et berge en milieu urbain');
+    } else {
+        return (feature.get('subtype_fr')  == 'Etang et berge en milieu urbain');
+    }
+}
+
+
+function exp_bmap_public_green_spaces_rule4_eval_expression(context) {
+    // "subtype_fr" = 'N/A'
+
+    var feature = context.feature;
+    
+    if (feature.properties) {
+        return (feature.get('subtype_fr')  == 'N/A');
+    } else {
+        return (feature.get('subtype_fr')  == 'N/A');
+    }
+}
+
+
+function exp_bmap_public_green_spaces_rule5_eval_expression(context) {
+    // "subtype_fr" = 'Non-aménagé'
+
+    var feature = context.feature;
+    
+    if (feature.properties) {
+        return (feature.get('subtype_fr')  == 'Non-aménagé');
+    } else {
+        return (feature.get('subtype_fr')  == 'Non-aménagé');
+    }
+}
+
+
+function exp_bmap_public_green_spaces_rule6_eval_expression(context) {
+    // "subtype_fr" = 'Parc et square'
+
+    var feature = context.feature;
+    
+    if (feature.properties) {
+        return (feature.get('subtype_fr')  == 'Parc et square');
+    } else {
+        return (feature.get('subtype_fr')  == 'Parc et square');
+    }
+}
+
+
+function exp_bmap_buildings_rule0_eval_expression(context) {
+    // 
+
+    var feature = context.feature;
+    
+    if (feature.properties) {
+        return null;
+    } else {
+        return null;
+    }
+}
+
+
+function exp_bmap_trees_be_rule0_eval_expression(context) {
+    // 
+
+    var feature = context.feature;
+    
+    if (feature.properties) {
+        return null;
+    } else {
+        return null;
     }
 }

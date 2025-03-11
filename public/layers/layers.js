@@ -1,19 +1,238 @@
 var wms_layers = [];
 
-var lyr_base_map = new ol.layer.Tile({
-                            source: new ol.source.TileWMS({
-                              url: "http://localhost:8080/geoserver/wms",
-                              attributions: ' ',
-                              params: {
-                                "LAYERS": "green_brussels:base_map",
-                                "TILED": "true",
-                                "VERSION": "1.3.0"},
-                            }),
-                            title: 'Fond de carte',
-                            display: 'always_on',
-                            opacity: 1.000000,
-                          });
-              wms_layers.push([lyr_base_map, 0]);
+/*const lyr_base_map = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    loader: function (extent, resolution, projection) {
+      fetch('http://localhost:3000/api/base_map')  // L'URL de ton endpoint API
+        .then(response => response.json())
+        .then(data => {
+          const features = new ol.format.GeoJSON().readFeatures(data, {
+            dataProjection: 'EPSG:3857',
+            featureProjection: projection.getCode()
+          });
+          lyr_base_map.getSource().clear();
+          lyr_base_map.getSource().addFeatures(features);
+        })
+        .catch(error => console.error('Erreur chargement API:', error));
+    }
+  }),
+  style: function (feature, resolution) {
+    // Assigner un style spécifique en fonction de la propriété "layer"
+    switch (feature.get('layer')) {
+      case 'bma_street_axes_names':
+        return style_bmap_street_axes_names(feature, resolution);
+      case 'bmap_blocks_desc':
+          return style_bmap_blocks_type(feature, resolution);
+      case 'bmap_public_green_spaces':
+          return style_bmap_public_green_spaces(feature, resolution);
+      case 'bmap_buildings':
+          return style_bmap_buildings(feature, resolution);
+      case 'bmap_municipalities':
+          return style_bmap_municipalities(feature, resolution);
+      case 'bmap_trees_be':
+          return style_bmap_trees(feature, resolution);
+      case 'bmap_addresses':
+          return style_bmap_addresses(feature, resolution);
+      // Style par défaut très simple pour les autres couches non définies
+      default:
+        return new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'red', // Contour en rouge
+                width: 3
+            }),
+            fill: new ol.style.Fill({
+                color: 'rgba(255, 0, 0, 0.2)' // Remplissage transparent rouge
+            })
+        });
+    }
+  },
+  title: 'Fond de carte',
+  opacity: 1.0
+});/*
+
+/*const lyr_base_map = new ol.layer.Tile({
+  source: new ol.source.TileWMS({
+    url: "http://localhost:8080/geoserver/wms",  // L'URL de ton GeoServer
+    params: {
+      'LAYERS': 'green_brussels:base_map',
+      'STYLES': '',
+      'FORMAT': 'image/png',
+      'TRANSPARENT': 'true',
+      'VERSION': '1.1.0',
+      'SRS': 'EPSG:3857'
+    },
+    serverType: 'geoserver'
+  }),
+  title: 'Fond de carte',
+  display: 'always_on',
+  opacity: 1.0
+});*/
+
+// Définition des couches individuelles avec leurs endpoints API respectifs
+const lyr_bmap_street_axes_names = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    loader: function () {
+      fetch('http://localhost:3000/api/street_axes_names')
+        .then(response => response.json())
+        .then(data => {
+          const features = new ol.format.GeoJSON().readFeatures(data, {
+            dataProjection: 'EPSG:3857',
+            featureProjection: 'EPSG:3857'
+          });
+          lyr_bmap_street_axes_names.getSource().clear();
+          lyr_bmap_street_axes_names.getSource().addFeatures(features);
+        })
+        .catch(error => console.error('Erreur chargement API:', error));
+    }
+  }),
+  style: style_bmap_street_axes_names,
+  title: ''
+});
+
+const lyr_bmap_blocks_desc = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    loader: function () {
+      fetch('http://localhost:3000/api/blocks_desc')
+        .then(response => response.json())
+        .then(data => {
+          const features = new ol.format.GeoJSON().readFeatures(data, {
+            dataProjection: 'EPSG:3857',
+            featureProjection: 'EPSG:3857'
+          });
+          lyr_bmap_blocks_desc.getSource().clear();
+          lyr_bmap_blocks_desc.getSource().addFeatures(features);
+        })
+        .catch(error => console.error('Erreur chargement API:', error));
+    }
+  }),
+  style: style_bmap_blocks_type,
+  title: ''
+});
+
+const lyr_bmap_public_green_spaces = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    loader: function () {
+      fetch('http://localhost:3000/api/public_green_spaces')
+        .then(response => response.json())
+        .then(data => {
+          const features = new ol.format.GeoJSON().readFeatures(data, {
+            dataProjection: 'EPSG:3857',
+            featureProjection: 'EPSG:3857'
+          });
+          lyr_bmap_public_green_spaces.getSource().clear();
+          lyr_bmap_public_green_spaces.getSource().addFeatures(features);
+        })
+        .catch(error => console.error('Erreur chargement API:', error));
+    }
+  }),
+  style: style_bmap_public_green_spaces,
+  title: ''
+});
+
+const lyr_bmap_buildings = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    loader: function () {
+      fetch('http://localhost:3000/api/buildings')
+        .then(response => response.json())
+        .then(data => {
+          const features = new ol.format.GeoJSON().readFeatures(data, {
+            dataProjection: 'EPSG:3857',
+            featureProjection: 'EPSG:3857'
+          });
+          lyr_bmap_buildings.getSource().clear();
+          lyr_bmap_buildings.getSource().addFeatures(features);
+        })
+        .catch(error => console.error('Erreur chargement API:', error));
+    }
+  }),
+  style: style_bmap_buildings,
+  title: ''
+});
+
+const lyr_bmap_municipalities = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    loader: function () {
+      fetch('http://localhost:3000/api/municipalities')
+        .then(response => response.json())
+        .then(data => {
+          const features = new ol.format.GeoJSON().readFeatures(data, {
+            dataProjection: 'EPSG:3857',
+            featureProjection: 'EPSG:3857'
+          });
+          lyr_bmap_municipalities.getSource().clear();
+          lyr_bmap_municipalities.getSource().addFeatures(features);
+        })
+        .catch(error => console.error('Erreur chargement API:', error));
+    }
+  }),
+  style: style_bmap_municipalities,
+  title: ''
+});
+
+const lyr_bmap_trees_be = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    loader: function () {
+      fetch('http://localhost:3000/api/trees_be')
+        .then(response => response.json())
+        .then(data => {
+          const features = new ol.format.GeoJSON().readFeatures(data, {
+            dataProjection: 'EPSG:3857',
+            featureProjection: 'EPSG:3857'
+          });
+          lyr_bmap_trees_be.getSource().clear();
+          lyr_bmap_trees_be.getSource().addFeatures(features);
+        })
+        .catch(error => console.error('Erreur chargement API:', error));
+    }
+  }),
+  style: style_bmap_trees,
+  title: ''
+});
+
+const lyr_bmap_addresses = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    loader: function () {
+      fetch('http://localhost:3000/api/addresses')
+        .then(response => response.json())
+        .then(data => {
+          const features = new ol.format.GeoJSON().readFeatures(data, {
+            dataProjection: 'EPSG:3857',
+            featureProjection: 'EPSG:3857'
+          });
+          lyr_bmap_addresses.getSource().clear();
+          lyr_bmap_addresses.getSource().addFeatures(features);
+        })
+        .catch(error => console.error('Erreur chargement API:', error));
+    }
+  }),
+  style: style_bmap_addresses,
+  title: ''
+});
+
+// **Création du groupe de couches**
+const lyr_base_map = new ol.layer.Group({
+  layers: [
+    lyr_bmap_street_axes_names,
+    lyr_bmap_blocks_desc,
+    lyr_bmap_public_green_spaces,
+    lyr_bmap_buildings,
+    lyr_bmap_municipalities,
+    lyr_bmap_trees_be,
+    lyr_bmap_addresses
+  ],
+  title: 'Fond de carte',
+  opacity: 1.0
+});
+
+
 
 var lyr_noise_multi_lden = new ol.layer.Tile({
                             source: new ol.source.TileWMS({
@@ -210,20 +429,6 @@ var lyr_municipalities = new ol.layer.Vector({
                             display: 'always_on',
                             opacity: 1.000000,
                           });
-
-var lyr_search_layer = new ol.layer.Vector({
-                            source: new ol.source.Vector({
-                              format: new ol.format.GeoJSON({
-                              }),
-                              strategy: ol.loadingstrategy.bbox,
-                              url: "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=green_brussels:search_layer&outputFormat=application/json&srsname=EPSG:3857"
-                            }),
-                            style: new ol.style.Style(),
-                            interactive: true,
-                            title: '',
-                            display: 'always_on',
-                            opacity: 1.000000,
-                          }); 
 
 lyr_base_map.setVisible(true);
 lyr_noise_multi_lden.setVisible(false);
