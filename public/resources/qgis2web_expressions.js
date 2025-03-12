@@ -1686,19 +1686,6 @@ function exp_bmap_public_green_spaces_rule6_eval_expression(context) {
 }
 
 
-function exp_bmap_buildings_rule0_eval_expression(context) {
-    // 
-
-    var feature = context.feature;
-    
-    if (feature.properties) {
-        return null;
-    } else {
-        return null;
-    }
-}
-
-
 function exp_bmap_trees_be_rule0_eval_expression(context) {
     // 
 
@@ -1710,3 +1697,24 @@ function exp_bmap_trees_be_rule0_eval_expression(context) {
         return null;
     }
 }
+
+//Zoom
+function updateZoomInfo() {
+    if (!map) {
+        console.error("❌ La carte n'est pas encore définie !");
+        return;
+    }
+    const zoomLevel = map.getView().getZoom();
+    const resolution = map.getView().getResolution();
+    document.getElementById('zoom-info').innerText = `Zoom: ${zoomLevel.toFixed(2)} | Résolution: ${resolution.toFixed(2)}`;
+}
+
+// Attendre que la carte soit bien chargée
+setTimeout(() => {
+    if (typeof map !== "undefined") {
+        map.getView().on('change:resolution', updateZoomInfo);
+        updateZoomInfo(); // Mise à jour initiale
+    } else {
+        console.error("❌ La carte n'est pas définie, vérifie l'ordre d'exécution !");
+    }
+}, 1000);
