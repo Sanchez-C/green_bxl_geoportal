@@ -7,8 +7,9 @@ html, body {
 }
 
 #map {
-    height: 80%;
-    padding-top: 5px;
+    width: 100%;
+    flex-grow: 1;
+    height: 100%;
 }
 
 .ol-control {
@@ -249,8 +250,8 @@ td video {
     font-weight: bold;
   }
   .tooltip-static {
-    background-color: #ffcc33;
-    color: black;
+    background-color: #008000;
+    color: white;
     border: 1px solid white;
   }
   .tooltip-measure:before,
@@ -265,7 +266,7 @@ td video {
     left: 50%;
   }
   .tooltip-static:before {
-    border-top-color: #ffcc33;
+    border-top-color: #008000;
   }
   .ol-touch .measure-control {
     top: 130px;

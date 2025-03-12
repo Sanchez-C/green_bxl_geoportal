@@ -1706,7 +1706,7 @@ function updateZoomInfo() {
     }
     const zoomLevel = map.getView().getZoom();
     const resolution = map.getView().getResolution();
-    document.getElementById('zoom-info').innerText = `Zoom: ${zoomLevel.toFixed(2)} | Résolution: ${resolution.toFixed(2)}`;
+    document.getElementById('zoom-info').innerText = `Zoom: ${zoomLevel.toFixed(2)}`;
 }
 
 // Attendre que la carte soit bien chargée

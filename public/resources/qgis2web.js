@@ -4,12 +4,13 @@ var map = new ol.Map({
     layers: layersList,
     view: new ol.View({
         projection: 'EPSG:3857',
+
         maxZoom: 20, minZoom: 11
     })
 });
 
 //initial view - epsg:3857 coordinates if not "Match project CRS"
-map.getView().fit([472385.988109, 6579486.289370, 499022.735602, 6606078.911337], map.getSize());
+map.getView().fit([472385.988109, 6579486.289370, 499022.735602, 6606078.911337], {size: map.getSize(), padding: [10, 10, 10, 10]});
 
 ////small screen definition
     var hasTouchScreen = map.getViewport().classList.contains('ol-touch');
