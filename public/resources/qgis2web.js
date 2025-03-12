@@ -950,9 +950,27 @@ document.getElementsByClassName('search-layer-input-search')[0].placeholder = 'S
 
 //Legend
 
+// Sidebar
+const sidebar = document.getElementById('sidebar');
+const toggleSidebarButton = document.getElementById('toggle-sidebar');
+const toggleIcon = toggleSidebarButton.querySelector('i');
+
+toggleSidebarButton.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    toggleSidebarButton.classList.toggle('open');
+
+    // Modifier l'icône et le texte
+    if (sidebar.classList.contains('open')) {
+        toggleIcon.classList.replace('fa-caret-left', 'fa-caret-right'); // Change l'icône
+    } else {
+        toggleIcon.classList.replace('fa-caret-right', 'fa-caret-left');
+    }
+});
+
 // Créer un contrôle pour la légende
 var legendControl = new ol.control.Control({
-    element: document.getElementById('legend-container')
+    element: document.getElementById('legend-container'),
+    target: document.getElementById('sidebar')
 });
 
 // Ajouter ce contrôle à la carte
@@ -1002,7 +1020,7 @@ function updateLegend(layer) {
                     break;
                 case 'leg_trees':
                     legendHTML = `
-                        <h4>Trees</h4>
+                        <h4>Arbres</h4>
                         <div class="leg_item"><img src="styles/legend/trees_be.png"/><p>Arbres</p></div>
                     `;
                     break;
@@ -1168,6 +1186,7 @@ function updateLegend(layer) {
             }
 
             // Ajouter la légende au conteneur
+            console.log(legendHTML); // Vérifie ce qui est ajouté à l'élément de légende
             legendDiv.innerHTML += legendHTML; // Utiliser += pour ajouter sans supprimer
         }
     });

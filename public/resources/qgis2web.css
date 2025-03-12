@@ -1,11 +1,3 @@
-html, body {
-    height: 100%;
-    padding: 0;
-    margin: 0;
-    font-family: sans-serif;
-    font-size: small;
-}
-
 #map {
     width: 100%;
     flex-grow: 1;
@@ -214,7 +206,6 @@ td video {
     margin: 1px;
 }
 
-
 .ol-zoom {
 	position: relative;
     float: left;
@@ -223,7 +214,6 @@ td video {
     margin-top: 8px;
     margin-left: 8px;
 }
-
 
 /* measurement */
 .measure-control {
@@ -410,30 +400,5 @@ td video {
 	list-style: none;	
 	}
 
-#legend-container {
-    position: absolute;
-    left: 50px; /* Ajuste cette valeur aussi si nécessaire */
-    top: 70px;
-    background: rgba(255, 255, 255, 0.7); /* Un fond léger pour la légende */
-    z-index: 10; /* S'assurer qu'elle soit au-dessus des autres éléments */
-    max-height: 80%; /* Ajuste la hauteur selon tes besoins */
-    overflow-y: auto; /* Active le défilement vertical */
-    scrollbar-width: none; /* Pour masquer la barre sur Firefox */
-    padding-left: 10px
-}
 
-.leg_item {
-    display: flex;
-    align-items: center; /* Centre verticalement l'image et le texte */
-    margin-bottom: 5px; /* Espacement entre les éléments */
-}
 
-.leg_item img {
-    margin-right: 5px; /* Espace entre l'image et le texte */
-    max-height: 20px; /* Tu peux ajuster la hauteur de l'image pour qu'elle corresponde à celle du texte */
-}
-
-.leg_item p {
-    margin: 0; /* Évite un petit décalage supplémentaire */
-    line-height: 20px; /* Assure-toi que la hauteur de ligne du texte est la même que celle de l'image */
-}

@@ -15,7 +15,9 @@
     <link rel="stylesheet" href="resources/ol-geocoder.min.css">
     <link rel="stylesheet" href="./resources/ol-layerswitcher.css">
     <link rel="stylesheet" href="./resources/qgis2web.css">
-    <link rel="stylesheet" href="./resources/style.css"> <!-- Fichier CSS nettoyé -->
+    <link rel="stylesheet" href="./resources/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 </head>
 <body>
     <!-- Interface GrapesJS -->
@@ -33,17 +35,27 @@
     </header>
     
     <!-- Carte et Légende -->
-    <main>
-        <div id="legend-container">
-            <h3>Légende</h3>
-            <div id="legend"></div>
-        </div>
+    <main>       
         <div id="map">
             <div id="popup" class="ol-popup">
                 <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                 <div id="popup-content"></div>
             </div>
         </div>
+
+        <div id="sidebar" class="sidebar">
+            <div id="layer-container" class="layer-container">
+                <h3>Couches</h3>
+            </div>
+            <div id="legend-container" class="legend-container">
+                <h3>Légende</h3>
+                <div id="legend"></div>
+            </div>
+        </div>
+
+        <button id="toggle-sidebar" class="toggle-sidebar">
+            <i class="fa-solid fa-caret-left"></i>
+        </button>
     </main>
     
     <!-- Footer -->
