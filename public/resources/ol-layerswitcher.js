@@ -91,43 +91,14 @@ class LayerSwitcher extends Control {
         element.className = this.hiddenClassName;
         this.button = document.createElement('button');
         element.appendChild(this.button);
-        this.panel = document.createElement('div');
-        this.panel.className = 'panel';
-        element.appendChild(this.panel);
+        this.panel = document.getElementById(options.target);
+        this.panel.classList.add('panel');
+        const ul = document.createElement('ul');
+        this.panel.appendChild(ul);
+
         LayerSwitcher.enableTouchScroll_(this.panel);
         element.classList.add(CSS_PREFIX + 'group-select-style-' + this.groupSelectStyle);
-        element.classList.add(CSS_PREFIX + 'activation-mode-' + this.activationMode);
-        if (this.activationMode === 'click') {
-            // TODO Next: Remove in favour of layer-switcher-activation-mode-click
-            element.classList.add('activationModeClick');
-            this.button.onclick = (e) => {
-                const evt = e || window.event;
-                if (this.element.classList.contains(this.shownClassName)) {
-                    this.hidePanel();
-                }
-                else {
-                    this.showPanel();
-                }
-                evt.preventDefault();
-            };
-        }
-        else {
-            this.button.onmouseover = () => {
-                this.showPanel();
-            };
-            this.button.onclick = (e) => {
-                const evt = e || window.event;
-                this.showPanel();
-                evt.preventDefault();
-            };
-            this.panel.onmouseout = (evt) => {
-                if (!this.panel.contains(evt.relatedTarget)) {
-                    this.hidePanel();
-                }
-            };
-        }
-        this.updateButton();
-    }
+        element.classList.add(CSS_PREFIX + 'activation-mode-' + this.activationMode);    }
     /**
      * Set the map instance the control is associated with.
      * @param map The map instance.
@@ -414,13 +385,15 @@ class LayerSwitcher extends Control {
         const lyrTitle = lyr.get('title');
         const checkboxId = LayerSwitcher.uuid();
         const label = document.createElement('label');
+    
         if (lyr instanceof LayerGroup && !lyr.get('combine')) {
             const isBaseGroup = LayerSwitcher.isBaseGroup(lyr);
             li.classList.add('group');
             if (isBaseGroup) {
                 li.classList.add(CSS_PREFIX + 'base-group');
             }
-            // Group folding
+    
+            // Bouton pour plier/déplier les groupes
             if (lyr.get('fold')) {
                 li.classList.add(CSS_PREFIX + 'fold');
                 li.classList.add(CSS_PREFIX + lyr.get('fold'));
@@ -432,22 +405,12 @@ class LayerSwitcher extends Control {
                 };
                 li.appendChild(btn);
             }
-            if (!isBaseGroup && options.groupSelectStyle != 'none') {
-                const input = document.createElement('input');
-                input.type = 'checkbox';
-                input.id = checkboxId;
-                input.checked = lyr.getVisible();
-                input.indeterminate = lyr.get('indeterminate');
-                input.onchange = function (e) {
-                    const target = e.target;
-                    LayerSwitcher.setVisible_(map, lyr, target.checked, options.groupSelectStyle);
-                    render(lyr);
-                };
-                li.appendChild(input);
-                label.htmlFor = checkboxId;
-            }
+    
+            // Supprimer le checkbox pour les groupes, juste un label
             label.innerHTML = lyrTitle;
             li.appendChild(label);
+    
+            // Conteneur des couches enfants
             const ul = document.createElement('ul');
             li.appendChild(ul);
             LayerSwitcher.renderLayers_(map, lyr, ul, options, render);
@@ -455,23 +418,21 @@ class LayerSwitcher extends Control {
         else {
             li.className = 'layer';
             const input = document.createElement('input');
-            if (lyr.get('type') === 'base') {
-                input.type = 'radio';
-            }
-            else {
-                input.type = 'checkbox';
-            }
+            input.type = lyr.get('type') === 'base' ? 'radio' : 'checkbox';
             input.id = checkboxId;
-            input.checked = lyr.get('visible');
+            input.checked = lyr.getVisible();
             input.indeterminate = lyr.get('indeterminate');
             input.onchange = function (e) {
                 const target = e.target;
                 LayerSwitcher.setVisible_(map, lyr, target.checked, options.groupSelectStyle);
                 render(lyr);
             };
+    
             li.appendChild(input);
             label.htmlFor = checkboxId;
             label.innerHTML = lyrTitle;
+    
+            // Désactiver l'affichage si hors des niveaux de zoom
             const rsl = map.getView().getResolution();
             if (rsl >= lyr.getMaxResolution() || rsl < lyr.getMinResolution()) {
                 label.className += ' disabled';
@@ -482,10 +443,12 @@ class LayerSwitcher extends Control {
                     label.className += ' disabled';
                 }
             }
+    
             li.appendChild(label);
         }
         return li;
     }
+    
     /**
      * Render all layers that are children of a group.
      * @param map The map instance.

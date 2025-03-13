@@ -137,7 +137,52 @@ var lyr_heat_islands = new ol.layer.Tile({
                           });
               wms_layers.push([lyr_heat_islands, 0]);
 
+// Création du groupe de couches pour la health map
+const lyr_health = new ol.layer.Group({
+  layers: [
+    lyr_health_air,
+    lyr_health_heat,
+    lyr_health_multi,
+    lyr_health_noise,
+    lyr_heat_islands
+  ],
+  title: 'Health map',
+  fold: 'close',
+  opacity: 1.0
+});
 
+// Création du groupe de couches pour la noise map
+const lyr_noise = new ol.layer.Group({
+  layers: [
+    lyr_noise_multi_lden,
+    lyr_noise_multi_ln,
+    lyr_noise_road_lden,
+    lyr_noise_road_ln
+  ],
+  title: 'Noise map',
+  fold: 'close',
+  opacity: 1.0
+});
+
+// Création du groupe de couches pour la noise map
+const lyr_statistics = new ol.layer.Group({
+  layers: [
+    lyr_md_noise_ln,
+    lyr_md_noise_lden,
+    lyr_md_road_occ_evening,
+    lyr_md_road_occ_morning,
+    lyr_md_households_size,
+    lyr_md_densite,
+    lyr_md_surfaces_imp,
+    lyr_md_surfaces_veg,
+    lyr_md_green_spaces,
+    lyr_md_gardens_rel,
+    lyr_md_gardens_nb,
+  ],
+  title: 'Statistical map',
+  fold: 'close',
+  opacity: 1.0
+});
 
 var trees_wfsSource = new ol.source.Vector({
   format: new ol.format.GeoJSON(),
@@ -194,26 +239,9 @@ lyr_search_layer.setVisible(true);
 var layersList = [
 lyr_base_map_wms,
 lyr_base_map_api,
-lyr_health_air,
-lyr_health_heat,
-lyr_health_multi,
-lyr_health_noise,
-lyr_heat_islands,
-lyr_noise_multi_lden,
-lyr_noise_multi_ln,
-lyr_noise_road_lden,
-lyr_noise_road_ln,
-lyr_md_noise_ln,
-lyr_md_noise_lden,
-lyr_md_road_occ_evening,
-lyr_md_road_occ_morning,
-lyr_md_households_size,
-lyr_md_densite,
-lyr_md_surfaces_imp,
-lyr_md_surfaces_veg,
-lyr_md_green_spaces,
-lyr_md_gardens_rel,
-lyr_md_gardens_nb,
+lyr_health,
+lyr_noise,
+lyr_statistics,
 lyr_trees_be,
 lyr_public_green_spaces,
 lyr_municipalities,

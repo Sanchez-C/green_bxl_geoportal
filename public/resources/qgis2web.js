@@ -1214,7 +1214,7 @@ map.addControl(scaleLineControl);
 
 var layerSwitcher = new ol.control.LayerSwitcher({
     tipLabel: "Layers",
-    target: 'top-right-container'
+    target: 'panel'
 });
 map.addControl(layerSwitcher);
 
@@ -1223,18 +1223,35 @@ map.addControl(layerSwitcher);
 function VisibilityChange(layer) {
     if (layer.get('display') !== 'always_on' && layer.getVisible()) {
         map.getLayers().forEach(function (otherLayer) {
-            if (otherLayer !== layer && otherLayer.get('display') !== 'always_on') {
-                otherLayer.setVisible(false);
+            // Vérifier si c'est bien une couche et non un groupe
+            if (otherLayer instanceof ol.layer.Group) {
+                otherLayer.getLayers().forEach(function (subLayer) {
+                    if (subLayer !== layer && subLayer.get('display') !== 'always_on') {
+                        subLayer.setVisible(false);
+                    }
+                });
+            } else {
+                if (otherLayer !== layer && otherLayer.get('display') !== 'always_on') {
+                    otherLayer.setVisible(false);
+                }
             }
         });
     }
 }
 
-// Ajouter un écouteur d'événement sur toutes les couches
+// Ajouter un écouteur d'événement sur toutes les couches et sous-couches des groupes
 map.getLayers().forEach(function (layer) {
-    layer.on('change:visible', function () {
-        VisibilityChange(layer);
-    });
+    if (layer instanceof ol.layer.Group) {
+        layer.getLayers().forEach(function (subLayer) {
+            subLayer.on('change:visible', function () {
+                VisibilityChange(subLayer);
+            });
+        });
+    } else {
+        layer.on('change:visible', function () {
+            VisibilityChange(layer);
+        });
+    }
 });
 
 //attribution
