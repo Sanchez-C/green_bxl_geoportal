@@ -62,7 +62,7 @@ const lyr_bmap_municipalities = new ol.layer.Vector({
   source: new ol.source.Vector({
     format: new ol.format.GeoJSON(),
     loader: function () {
-      fetch('http://localhost:3000/api/municipalities')
+      fetch('https://green-brussels.onrender.com/api/municipalities')
         .then(response => response.json())
         .then(data => {
           const features = new ol.format.GeoJSON().readFeatures(data, {
