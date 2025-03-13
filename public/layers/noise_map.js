@@ -1,59 +1,72 @@
 const lyr_noise_multi_lden = new ol.layer.Tile({
   source: new ol.source.TileWMS({
-    url: "http://localhost:8080/geoserver/wms",
-    attributions: ' ',
+    url: "http://localhost:8080/geoserver/wms",  // L'URL de ton GeoServer
     params: {
-      "LAYERS": "green_brussels:noise_multi_lden",
-      "TILED": "true",
-      "VERSION": "1.3.0"},
+      'LAYERS': 'green_brussels:noise_multi_lden',
+      'STYLES': '',
+      'FORMAT': 'image/png',
+      'TRANSPARENT': 'true',
+      'VERSION': '1.1.0',
+      'SRS': 'EPSG:3857'
+    },
+    serverType: 'geoserver'
   }),
   leg: 'leg_noise',
-  title: 'Bruit - Multi exposition (lden)',
+  title: 'Multi exposition (lden)',
   opacity: 1.000000,
 });
-wms_layers.push([lyr_noise_multi_lden, 0]);
 
 const lyr_noise_multi_ln = new ol.layer.Tile({
   source: new ol.source.TileWMS({
-    url: "http://localhost:8080/geoserver/wms",
-    attributions: ' ',
+    url: "http://localhost:8080/geoserver/wms",  // L'URL de ton GeoServer
     params: {
-      "LAYERS": "green_brussels:noise_multi_ln",
-      "TILED": "true",
-      "VERSION": "1.3.0"},
+      'LAYERS': 'green_brussels:noise_multi_ln',
+      'STYLES': '',
+      'FORMAT': 'image/png',
+      'TRANSPARENT': 'true',
+      'VERSION': '1.1.0',
+      'SRS': 'EPSG:3857'
+    },
+    serverType: 'geoserver'
   }),
   leg: 'leg_noise',
-  title: 'Bruit - Multi exposition (ln)',
+  title: 'Multi exposition (ln)',
   opacity: 1.000000,
 });
-wms_layers.push([lyr_noise_multi_ln, 0]);
 
 const lyr_noise_road_lden = new ol.layer.Tile({
   source: new ol.source.TileWMS({
-    url: "http://localhost:8080/geoserver/wms",
-    attributions: ' ',
+    url: "http://localhost:8080/geoserver/wms",  // L'URL de ton GeoServer
     params: {
-      "LAYERS": "green_brussels:noise_road_lden",
-      "TILED": "true",
-      "VERSION": "1.3.0"},
+      'LAYERS': 'green_brussels:noise_road_lden',
+      'STYLES': '',
+      'FORMAT': 'image/png',
+      'TRANSPARENT': 'true',
+      'VERSION': '1.1.0',
+      'SRS': 'EPSG:3857'
+    },
+    serverType: 'geoserver'
   }),
   leg: 'leg_noise',
-  title: 'Bruit - Trafic routier (lden)',
+  title: 'Trafic routier (lden)',
   opacity: 1.000000,
 });
-wms_layers.push([lyr_noise_road_lden, 0]);
 
 const lyr_noise_road_ln = new ol.layer.Tile({
   source: new ol.source.TileWMS({
-    url: "http://localhost:8080/geoserver/wms",
-    attributions: ' ',
+    url: "http://localhost:8080/geoserver/wms",  // L'URL de ton GeoServer
     params: {
-      "LAYERS": "green_brussels:noise_road_ln",
-      "TILED": "true",
-      "VERSION": "1.3.0"},
+      'LAYERS': 'green_brussels:noise_road_ln',
+      'STYLES': '',
+      'FORMAT': 'image/png',
+      'TRANSPARENT': 'true',
+      'VERSION': '1.1.0',
+      'SRS': 'EPSG:3857'
+    },
+    serverType: 'geoserver'
   }),
   leg: 'leg_noise',
-  title: 'Bruit - Trafic routier (ln)',
+  title: 'Trafic routier (ln)',
   opacity: 1.000000,
 });
-wms_layers.push([lyr_noise_road_ln, 0]);
+

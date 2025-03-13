@@ -14,7 +14,7 @@ var trees_wfsSource = new ol.source.Vector({
 // Source API
 var trees_apiSource = new ol.source.Vector({
     format: new ol.format.GeoJSON(),
-    url: "https://green-brussels.onrender.com/api/trees_be", // URL de l'API
+    url: "http://localhost:3000/api/trees_be", // URL de l'API
     strategy: ol.loadingstrategy.all
 });
 
@@ -32,7 +32,7 @@ var lyr_trees_be = new ol.layer.Vector({
     leg: 'leg_trees',
     popuplayertitle: 'Arbre',
     interactive: true,
-    title: 'Arbres gérés par Bruxelles Environnement',
+    title: 'Arbres gérés par BE',
     display: 'always_on'
 });
 
@@ -42,9 +42,17 @@ trees_wfsSource.once('featuresloaderror', function() {
     switchTreeSource(true);
 });
 
-// Fonction pour switcher entre API et WFS
+// Fonction pour switcher entre API et WFS et forcer le rechargement
 function switchTreeSource(forceAPI = false) {
     useAPI = forceAPI || !useAPI; // Fallback vers API si forceAPI = true
-    cluster_trees_be.setSource(useAPI ? trees_apiSource : trees_wfsSource);
-    console.log("Source des arbres changée :", useAPI ? "API" : "WFS");
+    var newSource = useAPI ? trees_apiSource : trees_wfsSource;
+
+    console.log("Changement de source :", useAPI ? "API" : "WFS");
+
+    // Vider la source actuelle avant de changer
+    cluster_trees_be.getSource().clear();
+    
+    // Définir la nouvelle source et forcer le rafraîchissement
+    cluster_trees_be.setSource(newSource);
+    newSource.refresh(); // Force le rechargement des données
 }

@@ -1,22 +1,4 @@
-// Création du groupe de couches pour les couches statistiques
-const lyr_statistics = new ol.layer.Group({
-  layers: [
-    lyr_md_noise_ln,
-    lyr_md_noise_lden,
-    lyr_md_road_occ_evening,
-    lyr_md_road_occ_morning,
-    lyr_md_households_size,
-    lyr_md_densite,
-    lyr_md_surfaces_imp,
-    lyr_md_surfaces_veg,
-    lyr_md_green_spaces,
-    lyr_md_gardens_rel,
-    lyr_md_gardens_nb,
-  ],
-  title: 'Statistical map',
-  fold: 'close',
-  opacity: 1.0
-});
+var wms_layers = [];
 
 // Création du groupe de couches pour la health map
 const lyr_health = new ol.layer.Group({
@@ -43,7 +25,27 @@ const lyr_noise = new ol.layer.Group({
   title: 'Noise map',
   fold: 'close',
   opacity: 1.0
-});   
+});
+
+// Création du groupe de couches pour la noise map
+const lyr_statistics = new ol.layer.Group({
+  layers: [
+    lyr_md_noise_ln,
+    lyr_md_noise_lden,
+    lyr_md_road_occ_evening,
+    lyr_md_road_occ_morning,
+    lyr_md_households_size,
+    lyr_md_densite,
+    lyr_md_surfaces_imp,
+    lyr_md_surfaces_veg,
+    lyr_md_green_spaces,
+    lyr_md_gardens_rel,
+    lyr_md_gardens_nb,
+  ],
+  title: 'Statistical map',
+  fold: 'close',
+  opacity: 1.0
+});
 
 lyr_base_map_wms.setVisible(true);
 lyr_base_map_api.setVisible(true);
