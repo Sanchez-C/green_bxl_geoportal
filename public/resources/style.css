@@ -22,16 +22,18 @@ body {
     height: 100vh;
 }
 
+/* Navbar */
 .navbar {
     background-color: #66c067;
     color: white;
     height: 10vh;
-    min-height: 60px ;
+    min-height: 60px;
     display: flex;
     align-items: center;
     padding: 0 20px;
 }
 
+/* Conteneur de la navbar */
 .navbar-container {
     display: flex;
     justify-content: space-between;
@@ -39,28 +41,89 @@ body {
     width: 100%;
 }
 
+/* Logo */
 .navbar-brand img {
     height: 40px;
 }
 
+/* Menu principal (ordinateur) */
 .navbar-menu {
     display: flex;
     gap: 15px;
 }
 
-.navbar-menu-link {
+/* Styles pour la liste de liens */
+.nav-links {
+    list-style: none; /* Enlève les puces */
+    margin: 0;
+    padding: 0;
+    display: flex; /* Affiche les éléments horizontalement */
+}
+
+.nav-links li {
+    margin: 0 15px; /* Espacement entre les éléments */
+}
+
+.nav-links a {
     background-color: #0080006f;
     color: inherit;
     text-decoration: none;
     font-size: 18px;
     font-weight: bold;
     padding: 10px;
-    border-radius: 5px; /* Bord arrondi pour plus de style */
+    border-radius: 5px; /* Bord arrondi */
     transition: color 0.3s;
 }
 
-.navbar-menu-link:hover {
+.nav-links a:hover {
     color: #008000;
+}
+
+/* Bouton menu burger (masqué sur grand écran) */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.hamburger {
+    width: 30px;
+    height: 3px;
+    background-color: white;
+    display: block;
+    margin: 6px 0;
+}
+
+/* RESPONSIVE : Petit écran (tablette & mobile) */
+@media (max-width: 768px) {
+    .navbar-menu {
+        display: none; /* Cache le menu par défaut */
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 0px;
+        background: #66c067;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .navbar-menu.open {
+        display: flex; /* Affiche le menu quand on clique sur le hamburger */
+    }
+
+    .menu-toggle {
+        display: block; /* Affiche le bouton burger */
+    }
+    
+    .nav-links {
+    list-style: none; /* Enlève les puces */
+    flex-direction: column;
+    }
+    
+    .nav-links li {
+        margin: 15px 0px; /* Pas de marges horizontales sur mobile */
+    }
 }
 
 /* Carte et légende */
@@ -176,6 +239,7 @@ main {
 /* Pied de page */
 footer {
     height: 5vh;
+    min-height: 34px ;
     display: flex;
     align-items: center;
     justify-content: space-between;

@@ -948,6 +948,16 @@ map.addControl(searchLayer);
 document.getElementsByClassName('search-layer')[0].getElementsByTagName('button')[0].className += ' fa fa-binoculars';
 document.getElementsByClassName('search-layer-input-search')[0].placeholder = 'Search feature ...';
 
+
+//Navbar
+
+const menuToggle = document.querySelector('.menu-toggle');
+const navbarMenu = document.querySelector('.navbar-menu');
+
+menuToggle.addEventListener('click', () => {
+    navbarMenu.classList.toggle('open');
+});
+
 //Legend
 
 // Sidebar
