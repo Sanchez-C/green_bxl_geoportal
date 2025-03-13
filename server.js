@@ -1,5 +1,6 @@
 // Importation des modules nécessaires
 const express = require('express'); // Framework node.js
+const cors = require('cors');
 const path = require('path'); // Pour gérer les chemins de fichiers
 const db = require('./db'); // Import du fichier de connexion à la BDD
 
@@ -8,6 +9,16 @@ const app = express();
 
 // Définir le port (par défaut 3000, mais Render utilisera son propre port)
 const port = process.env.PORT || 3000;
+
+// Autoriser localhost:3000 et d'autres origines (si besoin)
+const corsOptions = {
+  origin: ['http://localhost:3000', 'http://localhost:8080'], // Origines autorisées
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+// Appliquer CORS globalement
+app.use(cors(corsOptions));
 
 // Servir les fichiers statiques
 app.use(express.static(path.join(__dirname, 'public'))); // 'public' est le dossier où tes fichiers HTML/CSS/JS sont stockés
