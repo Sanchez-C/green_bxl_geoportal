@@ -58,7 +58,7 @@ li.layer-switcher-base-group > label {
 
 .panel .group button {
   position: absolute;
-  left: 15px;
+  left: 0px;
   display: inline-block;
   vertical-align: top;
   float: none;

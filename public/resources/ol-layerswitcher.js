@@ -385,15 +385,13 @@ class LayerSwitcher extends Control {
         const lyrTitle = lyr.get('title');
         const checkboxId = LayerSwitcher.uuid();
         const label = document.createElement('label');
-    
         if (lyr instanceof LayerGroup && !lyr.get('combine')) {
             const isBaseGroup = LayerSwitcher.isBaseGroup(lyr);
             li.classList.add('group');
             if (isBaseGroup) {
                 li.classList.add(CSS_PREFIX + 'base-group');
             }
-    
-            // Bouton pour plier/déplier les groupes
+            // Group folding
             if (lyr.get('fold')) {
                 li.classList.add(CSS_PREFIX + 'fold');
                 li.classList.add(CSS_PREFIX + lyr.get('fold'));
@@ -405,12 +403,22 @@ class LayerSwitcher extends Control {
                 };
                 li.appendChild(btn);
             }
-    
-            // Supprimer le checkbox pour les groupes, juste un label
+            if (!isBaseGroup && options.groupSelectStyle != 'none') {
+                const input = document.createElement('input');
+                input.type = 'checkbox';
+                input.id = checkboxId;
+                input.checked = lyr.getVisible();
+                input.indeterminate = lyr.get('indeterminate');
+                input.onchange = function (e) {
+                    const target = e.target;
+                    LayerSwitcher.setVisible_(map, lyr, target.checked, options.groupSelectStyle);
+                    render(lyr);
+                };
+                li.appendChild(input);
+                label.htmlFor = checkboxId;
+            }
             label.innerHTML = lyrTitle;
             li.appendChild(label);
-    
-            // Conteneur des couches enfants
             const ul = document.createElement('ul');
             li.appendChild(ul);
             LayerSwitcher.renderLayers_(map, lyr, ul, options, render);
@@ -418,21 +426,23 @@ class LayerSwitcher extends Control {
         else {
             li.className = 'layer';
             const input = document.createElement('input');
-            input.type = lyr.get('type') === 'base' ? 'radio' : 'checkbox';
+            if (lyr.get('type') === 'base') {
+                input.type = 'radio';
+            }
+            else {
+                input.type = 'checkbox';
+            }
             input.id = checkboxId;
-            input.checked = lyr.getVisible();
+            input.checked = lyr.get('visible');
             input.indeterminate = lyr.get('indeterminate');
             input.onchange = function (e) {
                 const target = e.target;
                 LayerSwitcher.setVisible_(map, lyr, target.checked, options.groupSelectStyle);
                 render(lyr);
             };
-    
             li.appendChild(input);
             label.htmlFor = checkboxId;
             label.innerHTML = lyrTitle;
-    
-            // Désactiver l'affichage si hors des niveaux de zoom
             const rsl = map.getView().getResolution();
             if (rsl >= lyr.getMaxResolution() || rsl < lyr.getMinResolution()) {
                 label.className += ' disabled';
@@ -443,7 +453,6 @@ class LayerSwitcher extends Control {
                     label.className += ' disabled';
                 }
             }
-    
             li.appendChild(label);
         }
         return li;
