@@ -1186,7 +1186,6 @@ function updateLegend(layer) {
             }
 
             // Ajouter la légende au conteneur
-            console.log(legendHTML); // Vérifie ce qui est ajouté à l'élément de légende
             legendDiv.innerHTML += legendHTML; // Utiliser += pour ajouter sans supprimer
         }
     });

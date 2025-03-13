@@ -1,141 +1,22 @@
-var wms_layers = [];
-
-var lyr_noise_multi_lden = new ol.layer.Tile({
-                            source: new ol.source.TileWMS({
-                              url: "http://localhost:8080/geoserver/wms",
-                              attributions: ' ',
-                              params: {
-                                "LAYERS": "green_brussels:noise_multi_lden",
-                                "TILED": "true",
-                                "VERSION": "1.3.0"},
-                            }),
-                            leg: 'leg_noise',
-                            title: 'Bruit - Multi exposition (lden)',
-                            opacity: 1.000000,
-                          });
-              wms_layers.push([lyr_noise_multi_lden, 0]);
-
-var lyr_noise_multi_ln = new ol.layer.Tile({
-                            source: new ol.source.TileWMS({
-                              url: "http://localhost:8080/geoserver/wms",
-                              attributions: ' ',
-                              params: {
-                                "LAYERS": "green_brussels:noise_multi_ln",
-                                "TILED": "true",
-                                "VERSION": "1.3.0"},
-                            }),
-                            leg: 'leg_noise',
-                            title: 'Bruit - Multi exposition (ln)',
-                            opacity: 1.000000,
-                          });
-              wms_layers.push([lyr_noise_multi_ln, 0]);
-
-var lyr_noise_road_lden = new ol.layer.Tile({
-                            source: new ol.source.TileWMS({
-                              url: "http://localhost:8080/geoserver/wms",
-                              attributions: ' ',
-                              params: {
-                                "LAYERS": "green_brussels:noise_road_lden",
-                                "TILED": "true",
-                                "VERSION": "1.3.0"},
-                            }),
-                            leg: 'leg_noise',
-                            title: 'Bruit - Trafic routier (lden)',
-                            opacity: 1.000000,
-                          });
-              wms_layers.push([lyr_noise_road_lden, 0]);
-
-var lyr_noise_road_ln = new ol.layer.Tile({
-                            source: new ol.source.TileWMS({
-                              url: "http://localhost:8080/geoserver/wms",
-                              attributions: ' ',
-                              params: {
-                                "LAYERS": "green_brussels:noise_road_ln",
-                                "TILED": "true",
-                                "VERSION": "1.3.0"},
-                            }),
-                            leg: 'leg_noise',
-                            title: 'Bruit - Trafic routier (ln)',
-                            opacity: 1.000000,
-                          });
-              wms_layers.push([lyr_noise_road_ln, 0]);
-
-var lyr_health_air = new ol.layer.Tile({
-                            source: new ol.source.TileWMS({
-                              url: "http://localhost:8080/geoserver/wms",
-                              attributions: ' ',
-                              params: {
-                                "LAYERS": "green_brussels:health_air",
-                                "TILED": "true",
-                                "SRS": "EPSG:3857",
-                                "VERSION": "1.3.0"},
-                            }),
-                            leg: 'leg_health',
-                            title: 'Santé - Pollution de l\'air',
-                            opacity: 1.000000,
-                          });
-              wms_layers.push([lyr_health_air, 0]);
-
-
-var lyr_health_heat = new ol.layer.Tile({
-                            source: new ol.source.TileWMS({
-                              url: "http://localhost:8080/geoserver/wms",
-                              attributions: ' ',
-                              params: {
-                                "LAYERS": "green_brussels:health_heat",
-                                "TILED": "true",
-                                "VERSION": "1.3.0"},
-                            }),
-                            leg: 'leg_health',
-                            title: 'Santé - Stress thermique',
-                            opacity: 1.000000,
-                          });
-              wms_layers.push([lyr_health_heat, 0]);
-
-var lyr_health_multi = new ol.layer.Tile({
-                            source: new ol.source.TileWMS({
-                              url: "http://localhost:8080/geoserver/wms",
-                              attributions: ' ',
-                              params: {
-                                "LAYERS": "green_brussels:health_multi",
-                                "TILED": "true",
-                                "VERSION": "1.3.0"},
-                            }),
-                            leg: 'leg_health',
-                            title: 'Santé - Multi exposition',
-                            opacity: 1.000000,
-                          });
-              wms_layers.push([lyr_health_multi, 0]);
-
-var lyr_health_noise = new ol.layer.Tile({
-                            source: new ol.source.TileWMS({
-                              url: "http://localhost:8080/geoserver/wms",
-                              attributions: ' ',
-                              params: {
-                                "LAYERS": "green_brussels:health_noise",
-                                "TILED": "true",
-                                "VERSION": "1.3.0"},
-                            }),
-                            leg: 'leg_health',
-                            title: 'Santé - Pollution sonore',
-                            opacity: 1.000000,
-                          });
-              wms_layers.push([lyr_health_noise, 0]);
-
-var lyr_heat_islands = new ol.layer.Tile({
-                            source: new ol.source.TileWMS({
-                              url: "http://localhost:8080/geoserver/wms",
-                              attributions: ' ',
-                              params: {
-                                "LAYERS": "green_brussels:heat_islands",
-                                "TILED": "true",
-                                "VERSION": "1.3.0"},
-                            }),
-                            leg: 'leg_heat_islands',
-                            title: 'Ilot de chaleur urbains',
-                            opacity: 1.000000,
-                          });
-              wms_layers.push([lyr_heat_islands, 0]);
+// Création du groupe de couches pour les couches statistiques
+const lyr_statistics = new ol.layer.Group({
+  layers: [
+    lyr_md_noise_ln,
+    lyr_md_noise_lden,
+    lyr_md_road_occ_evening,
+    lyr_md_road_occ_morning,
+    lyr_md_households_size,
+    lyr_md_densite,
+    lyr_md_surfaces_imp,
+    lyr_md_surfaces_veg,
+    lyr_md_green_spaces,
+    lyr_md_gardens_rel,
+    lyr_md_gardens_nb,
+  ],
+  title: 'Statistical map',
+  fold: 'close',
+  opacity: 1.0
+});
 
 // Création du groupe de couches pour la health map
 const lyr_health = new ol.layer.Group({
@@ -162,53 +43,7 @@ const lyr_noise = new ol.layer.Group({
   title: 'Noise map',
   fold: 'close',
   opacity: 1.0
-});
-
-// Création du groupe de couches pour la noise map
-const lyr_statistics = new ol.layer.Group({
-  layers: [
-    lyr_md_noise_ln,
-    lyr_md_noise_lden,
-    lyr_md_road_occ_evening,
-    lyr_md_road_occ_morning,
-    lyr_md_households_size,
-    lyr_md_densite,
-    lyr_md_surfaces_imp,
-    lyr_md_surfaces_veg,
-    lyr_md_green_spaces,
-    lyr_md_gardens_rel,
-    lyr_md_gardens_nb,
-  ],
-  title: 'Statistical map',
-  fold: 'close',
-  opacity: 1.0
-});
-
-var trees_wfsSource = new ol.source.Vector({
-  format: new ol.format.GeoJSON(),
-  url: function(extent) {
-      return "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0&request=GetFeature" +
-             "&typeName=green_brussels:trees_be&outputFormat=application/json&srsname=EPSG:3857&bbox=" +
-             extent.join(',') + ',EPSG:3857';
-  },
-  strategy: ol.loadingstrategy.bbox
-});
-
-var cluster_trees_be = new ol.source.Cluster({
-  distance: 30,
-  source: trees_wfsSource
-});
-
-var lyr_trees_be = new ol.layer.Vector({
-                declutter: false,
-                source: cluster_trees_be, 
-                style: style_trees_be,
-                leg: 'leg_trees',
-                popuplayertitle: 'Arbre',
-                interactive: true,
-                title: 'Arbres gérés par Bruxelles Environnement',
-                display: 'always_on'
-            });        
+});   
 
 lyr_base_map_wms.setVisible(true);
 lyr_base_map_api.setVisible(true);
