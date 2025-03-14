@@ -965,19 +965,30 @@ const sidebar = document.getElementById('sidebar');
 const toggleSidebarButton = document.getElementById('toggle-sidebar');
 const toggleIcon = toggleSidebarButton.querySelector('i');
 
+function adjustButtonPosition() {
+    const sidebarWidth = sidebar.offsetWidth; // Obtenir la largeur actuelle de la sidebar
+    toggleSidebarButton.style.right = `${sidebarWidth}px`; // Positionner le bouton à la droite de la sidebar
+}
 
-
-toggleSidebarButton.addEventListener('click', () => {
-    sidebar.classList.toggle('open');
+// Fonction pour ouvrir/fermer la sidebar
+function toggleSidebar() {
+    sidebar.classList.toggle('open'); // Ajouter/retirer la classe "open"
     toggleSidebarButton.classList.toggle('open');
-
     // Modifier l'icône et le texte
     if (sidebar.classList.contains('open')) {
         toggleIcon.classList.replace('fa-caret-left', 'fa-caret-right'); // Change l'icône
+        adjustButtonPosition(); // Ajuster la position du bouton quand la sidebar s'ouvre
     } else {
         toggleIcon.classList.replace('fa-caret-right', 'fa-caret-left');
+        toggleSidebarButton.style.right = '0px'; // Réinitialiser la position du bouton quand la sidebar est fermée
     }
-});
+};
+
+// Écouter les changements de taille de la sidebar (si tu souhaites un comportement réactif)
+window.addEventListener('resize', adjustButtonPosition);
+
+// Ajouter l'écouteur de clic pour le bouton
+toggleSidebarButton.addEventListener('click', toggleSidebar);
 
 // Créer un contrôle pour la légende
 var legendControl = new ol.control.Control({

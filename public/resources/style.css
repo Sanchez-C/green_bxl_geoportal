@@ -176,6 +176,7 @@ main {
     writing-mode: vertical-lr;
     transition: right 0.3s ease;
     border: none;
+
 }
 
 #toggle-sidebar i {
@@ -183,7 +184,6 @@ main {
 }
 
 #toggle-sidebar.open {
-    right: 300px; /* Il suit la sidebar */
     background-color: #66c067; 
 }
 
