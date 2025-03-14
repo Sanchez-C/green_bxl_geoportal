@@ -965,6 +965,8 @@ const sidebar = document.getElementById('sidebar');
 const toggleSidebarButton = document.getElementById('toggle-sidebar');
 const toggleIcon = toggleSidebarButton.querySelector('i');
 
+
+
 toggleSidebarButton.addEventListener('click', () => {
     sidebar.classList.toggle('open');
     toggleSidebarButton.classList.toggle('open');

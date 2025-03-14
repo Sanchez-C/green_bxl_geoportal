@@ -84,32 +84,32 @@ body {
     display: none;
     background: none;
     border: none;
+    font-size: 24px;
+    color: white;
     cursor: pointer;
-}
-
-.hamburger {
-    width: 30px;
-    height: 3px;
-    background-color: white;
-    display: block;
-    margin: 6px 0;
 }
 
 /* RESPONSIVE : Petit écran (tablette & mobile) */
 @media (max-width: 768px) {
+
     .navbar-menu {
-        display: none; /* Cache le menu par défaut */
-        flex-direction: column;
         position: absolute;
+        z-index: 1000;
         top: 60px;
         right: 0px;
         background: #66c067;
         padding: 10px;
         border-radius: 5px;
+        max-height: 0; /* Caché au départ */
+        overflow: hidden; /* Empêche le contenu de dépasser */
+        opacity: 0; /* Départ invisible */
+        transition: max-height 0.8s ease-out, opacity 0.8s ease-out, padding 0.5s ease-out;
     }
 
     .navbar-menu.open {
-        display: flex; /* Affiche le menu quand on clique sur le hamburger */
+        max-height: 500px; /* Se déploie avec animation */
+        opacity: 1; /* Devient visible progressivement */
+        padding: 10px; /* Permet un affichage progressif */
     }
 
     .menu-toggle {
@@ -117,8 +117,8 @@ body {
     }
     
     .nav-links {
-    list-style: none; /* Enlève les puces */
-    flex-direction: column;
+        list-style: none; /* Enlève les puces */
+        flex-direction: column;
     }
     
     .nav-links li {
@@ -141,6 +141,7 @@ main {
     bottom: 5vh; /* Ajoute une marge pour ne pas toucher le footer */
     right: -300px;  /* Cachée au départ */
     width: 300px;
+    max-width: 80vh;
     height: 85vh;
     background-color: #66c067;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
@@ -255,4 +256,17 @@ footer {
     border-radius: 5px;
     font-size: 14px;
     font-family: Arial, sans-serif;
+    transition: opacity 0.8s ease,
 }
+
+/* Masquer les cpoyright sur petits écrans */
+@media (max-width: 768px) {
+
+    footer p {
+        display: none;
+    }
+
+    footer {
+        justify-content: center;
+    }
+  }
