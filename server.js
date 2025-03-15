@@ -12,10 +12,17 @@ const port = process.env.PORT || 3000;
 
 // Autoriser localhost:3000 et d'autres origines (si besoin)
 const corsOptions = {
-  origin: ['http://localhost:3000', 'http://localhost:8080'], // Origines autorisées
+  origin: [
+    'http://localhost:3000', 
+    'http://localhost:8080', 
+    'https://green-brussels.onrender.com',  // Ajoute l'URL de ton site Render
+    'http://16.171.115.144' // Ajoute l'IP de ton GeoServer
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
+
+
 
 // Appliquer CORS globalement
 app.use(cors(corsOptions));
