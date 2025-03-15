@@ -34,6 +34,7 @@ const lyr_bmap_blocks_desc = new ol.layer.Vector({
     }
   }),
   style: style_bmap_blocks_type,
+  display: 'always_on',
   title: ''
 });
 
@@ -55,6 +56,7 @@ const lyr_bmap_public_green_spaces = new ol.layer.Vector({
     }
   }),
   style: style_bmap_public_green_spaces,
+  display: 'always_on',
   title: ''
 });
 
@@ -76,6 +78,7 @@ const lyr_bmap_municipalities = new ol.layer.Vector({
     }
   }),
   style: style_bmap_municipalities,
+  display: 'always_on',
   title: ''
 });
 
