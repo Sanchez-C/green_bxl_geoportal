@@ -966,8 +966,12 @@ const toggleSidebarButton = document.getElementById('toggle-sidebar');
 const toggleIcon = toggleSidebarButton.querySelector('i');
 
 function adjustButtonPosition() {
-    const sidebarWidth = sidebar.offsetWidth; // Obtenir la largeur actuelle de la sidebar
-    toggleSidebarButton.style.right = `${sidebarWidth}px`; // Positionner le bouton à la droite de la sidebar
+    if (sidebar.classList.contains('open')) {
+        const sidebarWidth = sidebar.offsetWidth; // Obtenir la largeur actuelle de la sidebar
+        toggleSidebarButton.style.right = `${sidebarWidth}px`; // Positionner le bouton à la droite de la sidebar
+    } else {
+        toggleSidebarButton.style.right = '0px';
+    }
 }
 
 // Fonction pour ouvrir/fermer la sidebar
