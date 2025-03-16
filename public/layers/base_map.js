@@ -1,6 +1,6 @@
 const lyr_base_map_wms = new ol.layer.Tile({
   source: new ol.source.TileWMS({
-    url: "https://16.171.115.144/geoserver/wms",  // L'URL de ton GeoServer
+    url: "http://16.171.115.144/geoserver/wms",  // L'URL de ton GeoServer
     params: {
       'LAYERS': 'green_brussels:base_map',
       'STYLES': '',
