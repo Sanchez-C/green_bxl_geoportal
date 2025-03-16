@@ -1,6 +1,6 @@
 const lyr_noise_multi_lden = new ol.layer.Tile({
   source: new ol.source.TileWMS({
-    url: "http://localhost:8080/geoserver/wms",  // L'URL de ton GeoServer
+    url: "http://16.171.115.144/geoserver/wms",  // L'URL de ton GeoServer
     params: {
       'LAYERS': 'green_brussels:noise_multi_lden',
       'STYLES': '',
@@ -18,7 +18,7 @@ const lyr_noise_multi_lden = new ol.layer.Tile({
 
 const lyr_noise_multi_ln = new ol.layer.Tile({
   source: new ol.source.TileWMS({
-    url: "http://localhost:8080/geoserver/wms",  // L'URL de ton GeoServer
+    url: "http://16.171.115.144/geoserver/wms",  // L'URL de ton GeoServer
     params: {
       'LAYERS': 'green_brussels:noise_multi_ln',
       'STYLES': '',
@@ -36,7 +36,7 @@ const lyr_noise_multi_ln = new ol.layer.Tile({
 
 const lyr_noise_road_lden = new ol.layer.Tile({
   source: new ol.source.TileWMS({
-    url: "http://localhost:8080/geoserver/wms",  // L'URL de ton GeoServer
+    url: "http://16.171.115.144/geoserver/wms",  // L'URL de ton GeoServer
     params: {
       'LAYERS': 'green_brussels:noise_road_lden',
       'STYLES': '',
@@ -54,7 +54,7 @@ const lyr_noise_road_lden = new ol.layer.Tile({
 
 const lyr_noise_road_ln = new ol.layer.Tile({
   source: new ol.source.TileWMS({
-    url: "http://localhost:8080/geoserver/wms",  // L'URL de ton GeoServer
+    url: "http://16.171.115.144/geoserver/wms",  // L'URL de ton GeoServer
     params: {
       'LAYERS': 'green_brussels:noise_road_ln',
       'STYLES': '',

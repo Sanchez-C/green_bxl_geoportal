@@ -4,7 +4,7 @@ const lyr_public_green_spaces = new ol.layer.Vector({
         strategy: ol.loadingstrategy.bbox,
         loader: function (extent, resolution, projection) {
             var apiUrl = "https://green-brussels.onrender.com/api/public_green_spaces";
-            var wfsUrl = "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
+            var wfsUrl = "http://16.171.115.144/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
                         "&request=GetFeature&typeName=green_brussels:public_green_spaces" +
                         "&outputFormat=application/json&srsname=EPSG:3857";
 

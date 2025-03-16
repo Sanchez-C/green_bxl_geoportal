@@ -5,7 +5,7 @@ const lyr_search_layer = new ol.layer.Vector({
         loader: function (extent, resolution, projection) {
           // Teste la disponibilité du service WFS
           var apiUrl = "https://green-brussels.onrender.com/api/search_layer";
-          var wfsUrl = "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
+          var wfsUrl = "http://16.171.115.144/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
                     "&request=GetFeature&typeName=green_brussels:search_layer" +
                     "&outputFormat=application/json&srsname=EPSG:3857";  
 

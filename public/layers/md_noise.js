@@ -5,7 +5,7 @@ const lyr_md_noise_lden = new ol.layer.Vector({
         loader: function (extent, resolution, projection) {
           // Teste la disponibilité du service WFS
           var apiUrl = "https://green-brussels.onrender.com/api/noise";
-          var wfsUrl = "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
+          var wfsUrl = "http://16.171.115.144/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
                     "&request=GetFeature&typeName=green_brussels:md_noise" +
                     "&outputFormat=application/json&srsname=EPSG:3857";  
 
@@ -75,7 +75,7 @@ const lyr_md_noise_ln = new ol.layer.Vector({
         loader: function (extent, resolution, projection) {
           // Teste la disponibilité du service WFS
           var apiUrl = "https://green-brussels.onrender.com/api/noise";
-          var wfsUrl = "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
+          var wfsUrl = "http://16.171.115.144/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
                     "&request=GetFeature&typeName=green_brussels:md_noise" +
                     "&outputFormat=application/json&srsname=EPSG:3857";  
 

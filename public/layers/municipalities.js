@@ -5,7 +5,7 @@ const lyr_municipalities = new ol.layer.Vector({
         loader: function (extent, resolution, projection) {
           // Teste la disponibilité du service WFS
           var apiUrl = "https://green-brussels.onrender.com/api/municipalities";
-          var wfsUrl = "http://localhost:8080/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
+          var wfsUrl = "http://16.171.115.144/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
                     "&request=GetFeature&typeName=green_brussels:md_municipalities" +
                     "&outputFormat=application/json&srsname=EPSG:3857";  
 
