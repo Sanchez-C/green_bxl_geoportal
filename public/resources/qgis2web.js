@@ -1012,6 +1012,18 @@ function calculateCircleRadius(value, maxSize, minSize, scaleFactor) {
     return Math.max(minSize, Math.min(maxSize, value * scaleFactor));
 }
 
+function getAllLayers(layerGroup) {
+    let layers = [];
+    layerGroup.getLayers().forEach(layer => {
+        if (layer instanceof ol.layer.Group) {
+            layers = layers.concat(getAllLayers(layer)); // Récursion pour explorer les groupes
+        } else {
+            layers.push(layer);
+        }
+    });
+    return layers;
+}
+
 // Fonction pour mettre à jour la légende en fonction de la couche active
 function updateLegend(layer) {
     var legendDiv = document.getElementById('legend'); // On prend l'élément de légende dans la page
@@ -1024,8 +1036,9 @@ function updateLegend(layer) {
     const minSize = 5;  // Taille min du rayon
     const maxSize = 20; // Taille max du rayon
     const scaleFactor = 0.008; // Ajuste selon tes valeurs
-
-    map.getLayers().forEach(function(layer) {
+    const allLayers = getAllLayers(map); // Récupérer toutes les couches (y compris dans les groupes)
+    
+    allLayers.forEach(function(layer) {
         if (layer.getVisible() && layer.get('leg')) {
             var legendKey = layer.get('leg'); // Récupérer l'identifiant de la légende
             var legendHTML = '';
@@ -1219,7 +1232,7 @@ function updateLegend(layer) {
 }
 
 // Ajouter un écouteur sur chaque couche pour détecter un changement de visibilité
-map.getLayers().forEach(layer => {
+getAllLayers(map).forEach(layer => {
     layer.on('change:visible', updateLegend);
 });
 
