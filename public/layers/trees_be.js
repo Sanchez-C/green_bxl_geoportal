@@ -8,7 +8,7 @@ var lyr_trees_be = new ol.layer.Vector({
             loader: function (extent, resolution, projection) {
                 // URLs des sources de données
                 var apiUrl = "https://green-brussels.onrender.com/api/trees_be"; 
-                var wfsUrl = "http://16.171.115.144/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
+                var wfsUrl = serviceUrl + "/geoserver/green_brussels/wfs?service=WFS&version=1.1.0" +
                             "&request=GetFeature&typeName=green_brussels:trees_be" +
                             "&outputFormat=application/json&srsname=EPSG:3857&bbox=" +
                             extent.join(',') + ',EPSG:3857';

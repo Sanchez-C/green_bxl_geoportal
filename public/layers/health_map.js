@@ -1,6 +1,6 @@
 const lyr_health_air = new ol.layer.Tile({
   source: new ol.source.TileWMS({
-    url: "http://16.171.115.144/geoserver/wms",
+    url: serviceUrl + "/geoserver/wms",
     params: {
       'LAYERS': 'green_brussels:health_air',
       'STYLES': '',
@@ -18,7 +18,7 @@ const lyr_health_air = new ol.layer.Tile({
 
 const lyr_health_heat = new ol.layer.Tile({
   source: new ol.source.TileWMS({
-    url: "http://16.171.115.144/geoserver/wms",
+    url: serviceUrl + "/geoserver/wms",
     params: {
       'LAYERS': 'green_brussels:health_heat',
       'STYLES': '',
@@ -36,7 +36,7 @@ const lyr_health_heat = new ol.layer.Tile({
 
 const lyr_health_multi = new ol.layer.Tile({
   source: new ol.source.TileWMS({
-    url: "http://16.171.115.144/geoserver/wms",
+    url: serviceUrl + "/geoserver/wms",
     params: {
       'LAYERS': 'green_brussels:health_multi',
       'STYLES': '',
@@ -54,7 +54,7 @@ const lyr_health_multi = new ol.layer.Tile({
 
 const lyr_health_noise = new ol.layer.Tile({
   source: new ol.source.TileWMS({
-    url: "http://16.171.115.144/geoserver/wms",
+    url: serviceUrl + "/geoserver/wms",
     params: {
       'LAYERS': 'green_brussels:health_noise',
       'STYLES': '',
@@ -72,7 +72,7 @@ const lyr_health_noise = new ol.layer.Tile({
 
 const lyr_heat_islands = new ol.layer.Tile({
   source: new ol.source.TileWMS({
-    url: "http://16.171.115.144/geoserver/wms",
+    url: serviceUrl + "/geoserver/wms",
     params: {
       'LAYERS': 'green_brussels:heat_islands',
       'STYLES': '',
