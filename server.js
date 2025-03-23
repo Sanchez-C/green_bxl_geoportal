@@ -16,7 +16,7 @@ const corsOptions = {
     'http://localhost:3000', 
     'http://localhost:8080', 
     'https://green-brussels.onrender.com',  // Ajoute l'URL de ton site Render
-    'http://16.171.115.144' // Ajoute l'IP de ton GeoServer
+    'https://green-brussels.duckdns.org' // Ajoute l'IP de ton GeoServer
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],

@@ -1,1 +1,1 @@
-const serviceUrl = "http://16.170.123.65";
+const serviceUrl = "https://green-brussels.duckdns.org";
