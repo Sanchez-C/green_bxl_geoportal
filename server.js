@@ -16,7 +16,7 @@ const corsOptions = {
     'http://localhost:3000', 
     'http://localhost:8080', 
     'https://green-brussels.onrender.com',  // Ajoute l'URL de ton site Render
-    'https://green-brussels.duckdns.org' // Ajoute l'IP de ton GeoServer
+    'https://green-brussels.duckdns.org' // Ajoute l'IP de ton site AWS
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
