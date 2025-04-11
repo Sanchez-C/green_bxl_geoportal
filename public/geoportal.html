@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <title>Geoportal</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="index, follow">
+    <meta name="generator" content="GrapesJS Studio">
+    
+    <!-- Stylesheets -->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="resources/ol.css">
+    <link rel="stylesheet" href="resources/fontawesome-all.min.css">
+    <link rel="stylesheet" href="resources/horsey.min.css">
+    <link rel="stylesheet" href="resources/ol3-search-layer.min.css">
+    <link rel="stylesheet" href="resources/ol-geocoder.min.css">
+    <link rel="stylesheet" href="resources/ol-layerswitcher.css">
+    <link rel="stylesheet" href="resources/qgis2web.css">
+    <link rel="stylesheet" href="resources/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <!-- Logo -->
+            <a href="https://github.com/Sanchez-C" class="navbar-brand">
+                <img src="./images/green_brussels_g.svg" alt="Logo">
+            </a>
+    
+            <!-- Menu burger pour mobile -->
+            <button class="menu-toggle" aria-label="Menu">
+                <i class="fas fa-bars"></i> <!-- Icône hamburger -->
+            </button>
+    
+            <!-- Liens de navigation -->
+            <nav class="navbar-menu">
+                <ul class="nav-links">
+                    <li><a href="#" class="navbar-menu-link">Accueil</a></li>
+                    <li><a href="#" class="navbar-menu-link">À propos</a></li>
+                    <li><a href="#" class="navbar-menu-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Carte et Légende -->
+    <main>       
+        <div id="map">
+            <div id="popup" class="ol-popup">
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                <div id="popup-content"></div>
+            </div>
+        </div>
+
+        <div id="sidebar" class="sidebar">
+            <div id="layer-container" class="layer-container">
+                <h3>Couches</h3>
+                <div id="panel" class="panel"></div>
+            </div>
+            <div id="legend-container" class="legend-container">
+                <h3>Légende</h3>
+                <div id="legend" class="legend"></div>
+            </div>
+        </div>
+
+        <button id="toggle-sidebar" class="toggle-sidebar">
+            <i class="fa-solid fa-caret-left"></i>
+        </button>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        <p>Copyright © Corentin Sanchez</p>
+        <div id="zoom-info">Zoom: -</div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.7.2/proj4.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ol/7.2.2/ol.js"></script>
+    <script src="resources/conf.js"></script>
+    <script src="resources/qgis2web_expressions.js"></script>
+    <script src="resources/functions.js"></script>
+    <script src="resources/ol.js"></script>
+    <script src="resources/horsey.min.js"></script>
+    <script src="resources/ol3-search-layer.js"></script>
+    <script src="resources/ol-layerswitcher.js"></script>
+    <script src="resources/ol-geocoder.js"></script>
+    <script src="styles/trees_be_style.js"></script>
+    <script src="styles/transp_style.js"></script>
+    <script src="styles/md_gardens_rel_style.js"></script>
+    <script src="styles/md_gardens_nb_style.js"></script>
+    <script src="styles/md_green_spaces_style.js"></script>
+    <script src="styles/md_densite_style.js"></script>
+    <script src="styles/md_households_size_style.js"></script>
+    <script src="styles/md_noise_lden_style.js"></script>
+    <script src="styles/md_noise_ln_style.js"></script>
+    <script src="styles/md_road_occ_evening_style.js"></script>
+    <script src="styles/md_road_occ_morning_style.js"></script>
+    <script src="styles/md_surfaces_imp_style.js"></script>
+    <script src="styles/md_surfaces_veg_style.js"></script>
+    <script src="styles/bmap_blocks_type_style.js"></script>
+    <script src="styles/bmap_public_green_spaces_style.js"></script>
+    <script src="styles/bmap_municipalities_style.js"></script>
+    <script src="layers/md_road_occupancy.js"></script>
+    <script src="layers/md_noise.js"></script> 
+    <script src="layers/md_population.js"></script>
+    <script src="layers/md_green_spaces.js"></script>
+    <script src="layers/search_layer.js"></script>
+    <script src="layers/base_map.js"></script>
+    <script src="layers/health_map.js"></script>
+    <script src="layers/noise_map.js"></script>
+    <script src="layers/public_green_spaces.js"></script>
+    <script src="layers/municipalities.js"></script>
+    <script src="layers/trees_be.js"></script>
+    <script src="layers/layers.js"></script>
+    <script src="resources/Autolinker.min.js"></script>
+    <script src="resources/qgis2web.js"></script>
+</body>
+</html>
