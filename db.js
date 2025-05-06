@@ -10,7 +10,7 @@ const { Client } = require('pg');
 console.log('🛠️ Création du client PostgreSQL...');
 const client = new Client({
   connectionString: process.env.DB_URL,
-  ssl: process.env.NODE_ENV === 'development' ? { rejectUnauthorized: false } : false,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
   connectionTimeoutMillis: 5000, // 5 secondes
 });
 

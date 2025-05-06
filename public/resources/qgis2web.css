@@ -228,7 +228,7 @@ td video {
 
 .tooltip {
     position: relative;
-    background: rgba(148, 39, 39, 0.5);
+    background: #008000;
     border-radius: 4px;
     color: white;
     padding: 4px 8px;
@@ -291,6 +291,15 @@ td video {
 }
 .gcd-gl-control button:after{
 	display: none;
+}
+
+.reset-view {
+	position: relative !important;
+    float: left;
+    top: unset !important;
+    left: unset !important;
+    margin-top: 8px;
+    margin-left: 8px;
 }
 
 .search-layer {
@@ -399,6 +408,8 @@ td video {
 	padding-left: 8px !important;
 	list-style: none;	
 	}
+
+
 
 
 

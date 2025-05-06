@@ -4,7 +4,6 @@ var map = new ol.Map({
     layers: layersList,
     view: new ol.View({
         projection: 'EPSG:3857',
-
         maxZoom: 20, minZoom: 11
     })
 });
@@ -57,6 +56,32 @@ map.getView().fit([472385.988109, 6579486.289370, 499022.735602, 6606078.911337]
         })(),
     });
     map.addControl(bottomRightContainer)
+
+//full screen button
+const fullscreenBtn = document.getElementById('fullscreen-btn');
+const bodyContainer = document.querySelector('body');
+
+fullscreenBtn.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+        bodyContainer.requestFullscreen().catch(err => {
+            console.error(`Erreur en entrant en plein écran : ${err.message}`);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+});
+
+// Changer l'icône dynamiquement
+document.addEventListener('fullscreenchange', () => {
+    if (document.fullscreenElement) {
+        fullscreenBtn.textContent = '🗗'; // Icône "réduire"
+        fullscreenBtn.title = "Quitter le plein écran";
+    } else {
+        fullscreenBtn.textContent = '⛶'; // Icône "plein écran"
+        fullscreenBtn.title = "Plein écran";
+    }
+});
+
 
 //popup
 var container = document.getElementById('popup');
@@ -181,10 +206,19 @@ function getHoverStyle(layerName, geometryType, clusterSize = 0) {
         'greenHover': new ol.style.Style({
             stroke: new ol.style.Stroke({
                 color: 'green',
-                width: 2
+                width: 3
             }),
             fill: new ol.style.Fill({
-                color: 'rgba(0, 255, 0, 0.2)'
+                color: 'rgba(0, 255, 0, 0)'
+            })
+        }),
+        'orangeHover': new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: '#ff6600',
+                width: 4
+            }),
+            fill: new ol.style.Fill({
+                color: 'rgba(255,102,0,0.2)'
             })
         }),
         'default': new ol.style.Style({
@@ -857,8 +891,6 @@ function createMeasureTooltip() {
   map.addOverlay(measureTooltip);
 }
 
-
-
 /**
  * format length output
  * @param {ol.geom.LineString} line
@@ -938,8 +970,8 @@ geocoder.on('addresschosen', function(evt) {
 //layer search
 
 var searchLayer = new SearchLayer({
-    layer: lyr_search_layer,
-    colName: 'name_fr',
+    layer: lyr_public_green_spaces,
+    colName: 'pgs_name_fr',
     zoom: 10,
     collapsed: true,
     map: map
@@ -947,6 +979,55 @@ var searchLayer = new SearchLayer({
 map.addControl(searchLayer);
 document.getElementsByClassName('search-layer')[0].getElementsByTagName('button')[0].className += ' fa fa-binoculars';
 document.getElementsByClassName('search-layer-input-search')[0].placeholder = 'Search feature ...';
+
+// Reset View Control personnalisé
+var ResetViewControl = (function(Control) {
+    function ResetViewControl(optOptions) {
+      var options = optOptions || {};
+      options.map = optOptions.map;
+  
+      var button = document.createElement('button');
+      button.setAttribute('type', 'button'); // important pour ne pas soumettre les formulaires
+      button.title = 'Réinitialiser la vue';
+      addClass(button, 'fa');
+      addClass(button, 'fa-rotate'); // Icône Font Awesome pour "home"
+  
+      var resetView = function () {
+        options.map.getView().animate({
+          center: options.center,
+          zoom: options.zoom,
+          duration: 500
+        });
+      };
+  
+      button.addEventListener('click', resetView, false);
+      button.addEventListener('touchstart', resetView, false);
+  
+      var element = document.createElement('div');
+      element.className = 'reset-view ol-unselectable ol-control';
+      element.appendChild(button);
+  
+      Control.call(this, {
+        element: element,
+        target: options.target
+      });
+    }
+  
+    if (Control) ResetViewControl.__proto__ = Control;
+    ResetViewControl.prototype = Object.create(Control && Control.prototype);
+    ResetViewControl.prototype.constructor = ResetViewControl;
+  
+    return ResetViewControl;
+}(ol.control.Control));
+
+// Exemple : recentrage sur Bruxelles
+var resetControl = new ResetViewControl({
+    map: map,
+    center: ol.proj.fromLonLat([4.35, 50.84]),
+    zoom: 11.5
+  });
+
+map.addControl(resetControl);
 
 
 //Navbar
@@ -1100,7 +1181,7 @@ function updateLegend(layer) {
                         <div class="leg_item"><img src="styles/legend/noise_4.png"/><p>60-65</p></div>
                         <div class="leg_item"><img src="styles/legend/noise_5.png"/><p>65-70</p></div>
                         <div class="leg_item"><img src="styles/legend/noise_6.png"/><p>70-75</p></div>
-                        <div class="leg_item"><img src="styles/legend/noise_7.png"/><p>> 75/p></div>
+                        <div class="leg_item"><img src="styles/legend/noise_7.png"/><p>> 75</p></div>
                     `;
                     break;
                 case 'leg_public_green_spaces':
@@ -1213,7 +1294,7 @@ function updateLegend(layer) {
                 case 'leg_md_gardens_rel':
                     legendHTML = `
                         <h4>Part de jardins privés (%)</h4>
-                        <div class="leg_item"><img src="styles/legend/md_gardens_rel_0.png"/><p>30 ménages</p></div>
+                        <div class="leg_item"><img src="styles/legend/md_gardens_rel_0.png"/><p>< 30 ménages</p></div>
                         <div class="leg_item"><img src="styles/legend/md_gardens_rel_1.png"/><p>4-17</p></div>
                         <div class="leg_item"><img src="styles/legend/md_gardens_rel_2.png"/><p>17-30</p></div>
                         <div class="leg_item"><img src="styles/legend/md_gardens_rel_3.png"/><p>30-46</p></div>
@@ -1239,6 +1320,363 @@ getAllLayers(map).forEach(layer => {
 // Initialiser la légende avec la première couche visible
 updateLegend();
 
+//Parc info pop up
+let featureSurlignee = null;
+
+document.getElementById('parcs-toggle').addEventListener('click', function () {
+    const popup = document.getElementById('parcs-popup');
+    const main = document.querySelector('main');
+    popup.classList.add('show');
+    main.classList.add('popup-open');
+    map.updateSize(); // 👈 recalcul de la taille de la carte
+});
+
+// Accordéons des sections du pop up
+function ajouterEvenementsAccordeon() {
+    document.querySelectorAll('.accordion-header').forEach(header => {
+        header.addEventListener('click', function() {
+            const accordionContent = this.nextElementSibling;
+
+            // Fermer les autres sections + retirer classe active des autres headers
+            document.querySelectorAll('.accordion-content').forEach(content => {
+                if (content !== accordionContent) {
+                    content.classList.remove('active');
+                }
+            });
+            document.querySelectorAll('.accordion-header').forEach(h => {
+                if (h !== this) {
+                    h.classList.remove('active');
+                }
+            });
+
+            // Toggle classe active sur l'élément cliqué (contenu + header)
+            accordionContent.classList.toggle('active');
+            this.classList.toggle('active');
+        });
+    });
+}
+
+
+async function afficherInfosParcs(urlsParcs, extent) {
+    const popup = document.getElementById('parcs-popup');
+    const tabsContainer = document.getElementById('tabs'); // Conteneur pour les onglets
+    const content = document.getElementById('parcs-content'); // Conteneur pour les infos des parcs
+    const main = document.querySelector('main');
+    const toggleButton = document.getElementById('parcs-toggle'); // Le bouton à rendre visible/invisible
+  
+    tabsContainer.innerHTML = '';  // Vide les anciens onglets
+    content.innerHTML = ''; // On vide le contenu précédent
+    popup.classList.remove('show'); // Retire d’abord la classe pour relancer l’animation proprement
+    
+    let infosAjoutees = 0;
+    let index = 0;
+  
+    for (const url of urlsParcs) {
+      try {
+        const response = await fetch(`/api/parc?url=${encodeURIComponent(url)}`);
+        const data = await response.json();
+        console.log(data)
+        if (
+            data.titre || data.soustitre || data.a_propos ||
+            data.image || data.infos_pratiques || data.amenagements
+          ) {
+            
+            // Créer un onglet pour ce parc
+            const tabButton = document.createElement('button');
+            tabButton.classList.add('tab-btn');
+            tabButton.textContent = data.titre || 'Parc inconnu';
+            tabButton.onclick = (() => {
+                const i = index;
+                return () => afficherParc(i);
+              })(); // IIFE pour capturer la bonne valeur
+            tabsContainer.appendChild(tabButton);
+
+            // Créer le contenu de l'onglet pour ce parc
+            const parcContent = document.createElement('div');
+            parcContent.classList.add('parc-info');
+
+            function genererInfosPratiques(contenu) {
+                if (!Array.isArray(contenu)) return '';
+              
+                return contenu.map(el => {
+                  if (el.type === 'h3') {
+                    return `<h3>${el.content}</h3>`;
+                  } else if (el.type === 'p') {
+                    return `<p>${el.content}</p>`;
+                  } else if (el.type === 'ul') {
+                    return `<ul>${el.items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+                  }
+                  return '';
+                }).join('');
+            }              
+
+            // Fonction utilitaire pour associer une icône à un label
+            function getIcon(label) {
+            const lower = label.toLowerCase();
+            if (lower.includes('toilette')) return 'fa-toilet';
+            if (lower.includes('pique-nique') || lower.includes('table')) return 'fa-table';
+            if (lower.includes('jeux')) return 'fa-child';
+            if (lower.includes('sport')) return 'fa-futbol';
+            if (lower.includes('fontaine')) return 'fa-tint';
+            if (lower.includes('pmr') || lower.includes('mobilité réduite')) return 'fa-wheelchair';
+            if (lower.includes('chien')) return 'fa-dog';
+            if (lower.includes('horeca') || lower.includes('restauration')) return 'fa-utensils';
+            if (lower.includes('banc')) return 'fa-couch';
+            if (lower.includes('poubelle')) return 'fa-trash-alt';
+            if (lower.includes('vélo') || lower.includes('cyclable')) return 'fa-bicycle';
+            if (lower.includes('ponton')) return 'fa-water';
+            return 'fa-leaf'; // Par défaut
+            }
+
+            // Génère la liste HTML des aménagements
+            function genererListeAmenagements(amenagements, descriptions) {
+                if (!Array.isArray(amenagements)) {
+                    console.warn('Aménagements invalides :', amenagements);
+                    return `<p>${amenagements || 'Non renseigné'}</p>`;
+                }
+            
+                // Générer la liste des aménagements (icônes et textes)
+                const listeAmenagements = amenagements.filter(am => am.type === 'icone' || am.type === 'texte').map(am => {
+                    if (am.type === 'icone') {
+                        const icon = getIcon(am.label);
+                        return `<li><i class="fas ${icon}"></i> ${am.label}</li>`;
+                    } else {
+                        return `<li>${am.label}</li>`;
+                    }
+                }).join('');
+            
+                // Générer la section des descriptions sous forme de paragraphes
+                const listeDescriptions = descriptions && descriptions.length > 0 
+                    ? descriptions.map(desc => `<p>${desc}</p>`).join('')
+                    : '';
+            
+                // Retourner à la fois la liste des aménagements et les descriptions
+                return `
+                    <ul class="amenagements">${listeAmenagements}</ul>
+                    <div class="descriptions">${listeDescriptions}</div>
+                `;
+            }
+            
+            parcContent.innerHTML = `
+                ${data.image ? `
+                    <div class="parc-image">
+                      <img src="${data.image}" alt="${data.titre || 'Image du parc'}">
+                      ${data.image_copyright ? `<div class="copyright">${data.image_copyright}</div>` : ''}
+                    </div>
+                  ` : ''}
+                <h1>${data.titre || 'Parc inconnu'}</h1>
+                <p class="distance"></p>
+                ${data.soustitre ? `<h4>${data.soustitre}</h4>` : ''}
+                ${data.a_propos ? `
+                    <section class="accordion">
+                        <h2 class="accordion-header">À propos</h2>
+                        <div class="accordion-content">
+                            <p>${data.a_propos}</p>
+                        </div>
+                    </section>` : ''}
+                ${data.infos_pratiques && data.infos_pratiques.length > 0 ? `
+                    <section class="accordion">
+                        <h2 class="accordion-header">Infos pratiques</h2>
+                        <div class="accordion-content">
+                            ${genererInfosPratiques(data.infos_pratiques)}
+                        </div>
+                    </section>` : ''}
+                ${data.amenagements && data.amenagements.length > 0 ? `
+                    <section class="accordion">
+                    <h2 class="accordion-header">Aménagements</h2>
+                        <div class="accordion-content">
+                            ${genererListeAmenagements(data.amenagements, data.descriptions || [])}
+                        </div>
+                    </section>` : ''}
+                ${data.url ? `<p class="source-link"><a href="${data.url}" target="_blank" rel="noopener noreferrer">Voir la fiche complète sur gardens.brussels</a></p>` : ''}
+            `;
+
+            content.appendChild(parcContent);
+
+            index++;
+            infosAjoutees++;
+            }
+
+      } catch (err) {
+        console.error(`Erreur pour l'URL ${url}`, err);
+      }
+    }
+
+    ajouterEvenementsAccordeon();
+
+    if (extent) {
+        if (infosAjoutees > 0) {
+            // Affiche le popup et zoom
+            toggleButton.classList.add('active');
+            popup.classList.add('show');
+            main.classList.add('popup-open');
+            map.updateSize();
+            setTimeout(() => {
+                map.getView().fit(extent, {
+                    padding: [50, 50, 50, 50],
+                    duration: 1000
+                });
+                updateScrollButtons();
+            }, 500);
+        } else {
+            // Zoom uniquement et masquer le bouton
+            toggleButton.classList.remove('active');
+            map.getView().fit(extent, {
+                padding: [50, 50, 50, 50],
+                duration: 1000
+            });
+        }
+    }
+}
+
+// Fonction pour afficher/masquer les infos d'un parc en particulier
+function afficherParc(index) {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const parcs = document.querySelectorAll('.parc-info');
+    const titreParc = tabs[index].textContent;
+    const parcContent = parcs[index];
+  
+    // Vérifie si le bouton est déjà actif
+    const isAlreadyActive = tabs[index].classList.contains('active');
+  
+    // Réinitialiser tous les onglets et cacher tous les contenus
+    tabs.forEach(tab => tab.classList.remove('active'));
+    parcs.forEach(parc => parc.classList.remove('active'));
+  
+    // Si c'était déjà actif, on désactive tout et on dézoome
+    if (isAlreadyActive) {
+      if (featureSurlignee) {
+        featureSurlignee.setStyle(null); // Remet le style par défaut
+        featureSurlignee = null;
+      }
+  
+      // Zoom out sur l'ensemble des parcs
+      const extent = searchExtent;
+      map.getView().fit(extent, {
+        padding: [50, 50, 50, 50],
+        duration: 800
+      });
+
+      document.querySelector('.parcs-popup').classList.remove('plein-ecran');
+
+      return;
+    }
+  
+    // Sinon, on active cet onglet et affiche les infos
+    tabs[index].classList.add('active');
+    parcContent.classList.add('active');
+    document.querySelector('.parcs-popup').classList.add('plein-ecran');
+  
+    const lien = parcContent.querySelector('a');
+    if (!lien) return;
+  
+    const urlParc = lien.href;
+    const source = searchedParcs.getSource();
+    const feature = source.getFeatures().find(f => f.get('url_gardens') === urlParc);
+  
+    if (feature) {
+
+        // Afficher la distance si disponible
+        const distance = feature.get('distance');
+        if (distance !== undefined) {
+            const distanceElement = parcContent.querySelector('.distance');
+            if (distanceElement) {
+                distanceElement.textContent = `📍 Distance : ${Math.round(distance)} m`;
+            }
+        }
+
+        // Supprimer le style précédent
+        if (featureSurlignee && featureSurlignee !== feature) {
+            featureSurlignee.setStyle(null);
+        }
+  
+        // Zoom sur la feature
+        const geom = feature.getGeometry();
+        map.getView().fit(geom, {
+            padding: [50, 50, 50, 50],
+            maxZoom: 17,
+            duration: 800
+        });
+  
+        // Appliquer un style temporaire
+        feature.setStyle(HighlightedStyle());
+        featureSurlignee = feature;
+
+    }
+}
+
+// Pour fermer le popup
+document.getElementById('close-popup').addEventListener('click', () => {
+    const popup = document.getElementById('parcs-popup');
+    const main = document.querySelector('main');
+    popup.classList.remove('show');
+    main.classList.remove('popup-open');
+    map.updateSize(); // 👈 recalcul de la taille de la carte
+});
+
+// Carrousel
+
+// Sélection des éléments
+const tabs = document.getElementById('tabs');
+const btnLeft = document.querySelector('.carousel-nav.left');
+const btnRight = document.querySelector('.carousel-nav.right');
+
+// Ajout des événements pour les boutons gauche/droit (click)
+btnLeft.addEventListener('click', () => {
+    tabs.scrollBy({ left: -150, behavior: 'smooth' });
+});
+
+btnRight.addEventListener('click', () => {
+    tabs.scrollBy({ left: 150, behavior: 'smooth' });
+});
+
+// Ajout des événements pour les boutons gauche/droit (mouswheel)
+tabs.addEventListener('wheel', (event) => {
+  // Vérifie si l'utilisateur fait un scroll vertical
+  if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
+    event.preventDefault(); // empêche le scroll vertical de la page
+
+    // Sens inversé : haut = droite, bas = gauche
+    const scrollAmount = 150; // à ajuster selon ta préférence
+    if (event.deltaY < 0) {
+      tabs.scrollLeft += scrollAmount;
+    } else {
+      tabs.scrollLeft -= scrollAmount;
+    }
+  }
+}, { passive: false }); // passive false pour pouvoir utiliser preventDefault
+
+// Fonction pour mettre à jour la visibilité des boutons de navigation
+function updateScrollButtons() {
+    const scrollLeft = tabs.scrollLeft; // Position actuelle du scroll
+    const scrollWidth = tabs.scrollWidth; // Largeur totale du contenu
+    const clientWidth = tabs.clientWidth; // Largeur de la fenêtre visible
+
+    // Affichage des valeurs pour voir ce qui se passe vraiment
+    console.log(`scrollLeft: ${scrollLeft}, scrollWidth: ${scrollWidth}, clientWidth: ${clientWidth}`);
+
+    // Vérification de ce qui se passe
+    if (scrollWidth <= clientWidth) {
+        console.log("Contenu entièrement visible, cacher les boutons.");
+        btnLeft.classList.add('disabled');
+        btnRight.classList.add('disabled');
+    } else {
+        // Vérifier si on peut scroller vers la gauche
+        const canScrollLeft = scrollLeft > 5;
+        console.log("Can scroll left: " + canScrollLeft);
+        btnLeft.classList.toggle('disabled', !canScrollLeft);
+
+        // Vérifier si on peut scroller vers la droite
+        const canScrollRight = scrollLeft < scrollWidth - clientWidth - 5;
+        console.log("Can scroll right: " + canScrollRight);
+        btnRight.classList.toggle('disabled', !canScrollRight);
+    }
+}
+
+// Met à jour les boutons de navigation au scroll ou au redimensionnement
+tabs.addEventListener('scroll', updateScrollButtons);
+window.addEventListener('resize', updateScrollButtons);
+
 //scalebar
 
 // Créer une barre d'échelle
@@ -1257,28 +1695,58 @@ var layerSwitcher = new ol.control.LayerSwitcher({
 });
 map.addControl(layerSwitcher);
 
-
 // Fonction pour gérer l'exclusivité des couches
 function VisibilityChange(layer) {
-    if (layer.get('display') !== 'always_on' && layer.getVisible()) {
-        map.getLayers().forEach(function (otherLayer) {
-            // Vérifier si c'est bien une couche et non un groupe
-            if (otherLayer instanceof ol.layer.Group) {
-                otherLayer.getLayers().forEach(function (subLayer) {
-                    if (subLayer !== layer && subLayer.get('display') !== 'always_on') {
-                        subLayer.setVisible(false);
-                    }
-                });
-            } else {
-                if (otherLayer !== layer && otherLayer.get('display') !== 'always_on') {
-                    otherLayer.setVisible(false);
+    const isBaseMap = layer.get('isBaseMap') === true;
+    const isAlwaysOn = layer.get('display') === 'always_on';
+
+    // On ne fait rien si la couche activée n'est pas visible
+    if (!layer.getVisible()) return;
+
+    map.getLayers().forEach(function (otherLayer) {
+        // Cas des groupes
+        if (otherLayer instanceof ol.layer.Group) {
+            otherLayer.getLayers().forEach(function (subLayer) {
+                const subIsBaseMap = subLayer.get('isBaseMap') === true;
+                const subIsAlwaysOn = subLayer.get('display') === 'always_on';
+
+                if (
+                    isBaseMap && subIsBaseMap &&
+                    subLayer !== layer
+                ) {
+                    subLayer.setVisible(false);
                 }
+
+                if (
+                    !isBaseMap && !subIsAlwaysOn && !subIsBaseMap &&
+                    subLayer !== layer
+                ) {
+                    subLayer.setVisible(false);
+                }
+            });
+        } else {
+            // Cas des couches hors groupe
+            const otherIsBaseMap = otherLayer.get('isBaseMap') === true;
+            const otherIsAlwaysOn = otherLayer.get('display') === 'always_on';
+
+            if (
+                isBaseMap && otherIsBaseMap &&
+                otherLayer !== layer
+            ) {
+                otherLayer.setVisible(false);
             }
-        });
-    }
+
+            if (
+                !isBaseMap && !otherIsAlwaysOn && !otherIsBaseMap &&
+                otherLayer !== layer
+            ) {
+                otherLayer.setVisible(false);
+            }
+        }
+    });
 }
 
-// Ajouter un écouteur d'événement sur toutes les couches et sous-couches des groupes
+// Ajout de l’écouteur sur toutes les couches
 map.getLayers().forEach(function (layer) {
     if (layer instanceof ol.layer.Group) {
         layer.getLayers().forEach(function (subLayer) {
@@ -1291,6 +1759,37 @@ map.getLayers().forEach(function (layer) {
             VisibilityChange(layer);
         });
     }
+});
+
+
+// Base Map switcher
+
+const switcher = document.getElementById('basemapSwitcher');
+const toggle = document.getElementById('currentBasemap');
+const options = document.getElementById('basemapOptions');
+
+// Toggle dépliage
+toggle.addEventListener('click', () => {
+  switcher.classList.toggle('active');
+});
+
+// Clic sur une miniature
+document.querySelectorAll('.basemap-option').forEach(option => {
+  option.addEventListener('click', () => {
+    const targetTitle = option.getAttribute('data-layer');
+
+    map.getLayers().forEach(layer => {
+      if (layer.get('isBaseMap')) {
+        layer.setVisible(layer.get('bmaptitle') === targetTitle);
+      }
+    });
+
+    // Mise à jour de l'image active
+    toggle.src = option.src;
+
+    // Repli du menu
+    switcher.classList.remove('active');
+  });
 });
 
 //attribution
@@ -1311,7 +1810,6 @@ var bottomAttributionUl = bottomAttribution.element.querySelector('ul');
 if (bottomAttributionUl) {
   bottomAttribution.element.insertBefore(attributionList, bottomAttributionUl);
 }
-
 
 // Disable "popup on hover" or "highlight on hover" if ol-control mouseover
 var preDoHover = doHover;
@@ -1360,6 +1858,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (measureControl) {
         topLeftContainerDiv.appendChild(measureControl);
     }
+
+    //reste control
+    var resetControlDiv = document.getElementsByClassName('reset-view')[0];
+    if (resetControlDiv) {
+        topLeftContainerDiv.appendChild(resetControlDiv);
+    }
+
     //scale line
     var scaleLineControl = document.getElementsByClassName('ol-scale-line')[0];
     if (scaleLineControl) {
@@ -1371,3 +1876,4 @@ document.addEventListener('DOMContentLoaded', function() {
     if (attributionControl) {
         bottomRightContainerDiv.appendChild(attributionControl);
     }
+
