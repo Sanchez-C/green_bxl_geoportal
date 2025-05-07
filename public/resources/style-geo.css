@@ -1,0 +1,732 @@
+/* Reset de base */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: sans-serif;
+    font-size: small;
+}
+
+/* Structure principale */
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.fullscreen-toggle {
+    position: absolute;
+    align-content: center;
+    bottom: 15px;
+    right: 15px;
+    height: 40px;
+    width: 40px;
+    background: #66c067;
+    color: white;
+    border: none;
+    padding: 5px;
+    font-size: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 500;
+}
+
+.fullscreen-toggle:hover {
+    background: #0080006c;;
+    transform: scale(1.1);
+}
+
+/* Navbar */
+.navbar {
+    background-color: #66c067;
+    color: white;
+    height: 10vh;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 2000;
+}
+
+/* Conteneur de la navbar */
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* Logo */
+.navbar-brand img {
+    height: 40px;
+}
+
+/* Menu principal (ordinateur) */
+.navbar-menu {
+    display: flex;
+    gap: 15px;
+}
+
+/* Styles pour la liste de liens */
+.nav-links {
+    list-style: none; /* Enlève les puces */
+    margin: 0;
+    padding: 0;
+    display: flex; /* Affiche les éléments horizontalement */
+}
+
+.nav-links li {
+    margin: 0 15px; /* Espacement entre les éléments */
+}
+
+.nav-links a {
+    background-color: #0080006f;
+    color: inherit;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px; /* Bord arrondi */
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #008000;
+}
+
+/* Bouton menu burger (masqué sur grand écran) */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+}
+
+/* RESPONSIVE : Petit écran (tablette & mobile) */
+@media (max-width: 768px) {
+
+    .navbar-menu {
+        position: absolute;
+        top: 60px;
+        right: 0px;
+        background: #66c067;
+        padding: 10px;
+        border-radius: 5px;
+        max-height: 0; /* Caché au départ */
+        overflow: hidden; /* Empêche le contenu de dépasser */
+        opacity: 0; /* Départ invisible */
+        transition: max-height 0.8s ease-out, opacity 0.8s ease-out, padding 0.5s ease-out;
+    }
+
+    .navbar-menu.open {
+        max-height: 500px; /* Se déploie avec animation */
+        opacity: 1; /* Devient visible progressivement */
+        padding: 10px; /* Permet un affichage progressif */
+    }
+
+    .menu-toggle {
+        display: block; /* Affiche le bouton burger */
+    }
+    
+    .nav-links {
+        list-style: none; /* Enlève les puces */
+        flex-direction: column;
+    }
+    
+    .nav-links li {
+        margin: 15px 0px; /* Pas de marges horizontales sur mobile */
+    }
+}
+
+/* Carte et légende */
+main {
+    flex-grow: 1;
+    height: 85vh;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+/* La carte prend 100% par défaut */
+#map {
+    flex: 1;
+    margin: 0;
+}
+
+/* Décale la carte quand le popup est actif */
+main.popup-open #map {
+    margin-left: 30%;
+}
+
+/* Styles de base pour la sidebar */
+#sidebar {
+    position: fixed;
+    top: 10vh; /* Ajoute une marge pour laisser de l'espace au header */
+    bottom: 5vh; /* Ajoute une marge pour ne pas toucher le footer */
+    right: -300px;  /* Cachée au départ */
+    width: 300px;
+    max-width: 80vh;
+    height: 85vh;
+    border-radius: 10px 0 0 10px;
+    background-color: #66c067;
+    box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.2);
+    transition: right 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 1rem;
+    z-index: 1000;
+}
+
+/* Afficher la sidebar lorsque le bouton est cliqué */
+#sidebar.open {
+    right: 0;  /* Affiche la sidebar */
+}
+
+#sidebar h3 {
+    margin: 5px;
+}
+
+#toggle-sidebar {
+    position: fixed;
+    top: 50%;
+    right: 0px;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 100px;
+    background-color: #40a43c;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2px;
+    border-radius: 5px 0 0 5px;
+    cursor: pointer;
+    writing-mode: vertical-lr;
+    transition: right 0.3s ease;
+    border: none;
+    z-index: 1000;
+}
+
+#toggle-sidebar i {
+    font-size: 50px;
+}
+
+#toggle-sidebar.open {
+    background-color: #66c067; 
+}
+
+/* Style du hover sur le bouton */
+#toggle-sidebar:hover {
+    color:#008000;
+}
+
+/* Containers de la sidebar */
+#sidebar .legend-container,
+#sidebar .layer-container
+ {
+    flex: 1;
+    display: flex;
+    flex-direction: column; /* Les éléments sont empilés verticalement */
+    padding: 10px;
+    color: white;
+    background: #008000;
+    border-radius: 5px;
+    overflow: hidden; /* Empêche le débordement */
+}
+
+/* Style des listes de couches du layer switcher et la légende */
+.legend
+ {
+    flex: 1;  /* Prend tout l’espace disponible */
+    overflow-y: auto;  /* Permet le scroll vertical */
+    scrollbar-width: none;
+    color: black;
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Styles des éléments de légende */
+
+.leg_item {
+    display: flex;
+    align-items: center; /* Centre verticalement l'image et le texte */
+    margin-bottom: 5px; /* Espacement entre les éléments */
+}
+
+.leg_item img {
+    margin-right: 5px; /* Espace entre l'image et le texte */
+    max-height: 20px; /* Tu peux ajuster la hauteur de l'image pour qu'elle corresponde à celle du texte */
+}
+
+.leg_item p {
+    margin: 0; /* Évite un petit décalage supplémentaire */
+    line-height: 20px; /* Assure-toi que la hauteur de ligne du texte est la même que celle de l'image */
+}
+
+/* Parc info pop up */
+
+.parcs-control {
+    position: absolute;
+    bottom: 10%;
+    left: 1%;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    cursor: pointer;
+    z-index: 500;
+    background-color: #66c067;
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Ajout du relief */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2),
+                -1px -1px 2px rgba(255, 255, 255, 0.5);
+    transition: all 0.2s ease-in-out;
+}
+
+#parcs-toggle {
+    opacity: 0;  /* Par défaut, bouton invisible */
+    visibility: hidden;
+    transition: opacity 0.3s;
+}
+
+#parcs-toggle.active {
+    opacity: 1;  /* Lorsque le bouton a la classe active, il devient visible */
+    visibility: visible;
+}
+
+.parcs-control i {
+    font-size: 25px;
+    color: white;
+}
+
+.parcs-control:hover {
+    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2),
+                inset -1px -1px 2px rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);
+}
+
+.parcs-control i:hover {
+    color: #008000;
+    transform: scale(1.1);
+}
+  
+.parcs-popup {
+    position: absolute; /* Le popup est absolument positionné, donc n'occupe pas d’espace */
+    width: 30%;
+    height: 100%;
+    background: #66c067;
+    padding: 20px;
+    box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    scrollbar-width: none;
+    /* Cacher par défaut avec animation */
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    z-index: 1000;
+  }
+  
+/* Quand affiché */
+.parcs-popup.show {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+  
+.content-container {
+    position: relative;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Regroupe le bouton de fermeture + le titre sur la même ligne */
+.popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+/* Bouton de fermeture stylisé */
+.close-btn {
+    background-color: #eee;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    /* Ajout du relief */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2),
+                -1px -1px 2px rgba(255, 255, 255, 0.5);
+    transition: all 0.2s ease-in-out;
+}
+
+.close-btn:hover {
+    background-color: #4caf50;
+    color: white;
+    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2),
+                inset -1px -1px 2px rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);
+}
+
+/* Responsive : sur mobile, le pop-up passe au-dessus de la carte */
+@media (max-width: 768px) {
+    main {
+        flex-direction: column;
+    }
+
+    main.popup-open #map {
+        margin: 0;
+    }
+
+    .parcs-popup {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        transform: translateY(100%); /* caché */
+        transition: transform 0.3s ease, opacity 0.3s ease, height 0.3s ease;
+        opacity: 0;
+        padding: 1rem 20px;
+        box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.2);
+        pointer-events: none;
+        height: 35%; /* hauteur initiale visible */
+    }
+    
+    .parcs-popup.show {
+        transform: translateY(0%);
+        opacity: 1;
+        pointer-events: auto;
+    }
+    
+    .parcs-popup.show.plein-ecran {
+        height: 100%; /* quand on veut tout afficher */
+    }
+    
+
+    .popup-header {
+        margin-bottom: 0.2rem;
+    }
+
+    .content-container {
+        padding: 0.2rem 1.5rem;
+    }
+
+    .tabs {
+        padding: 0.2rem 0.5rem;
+    }
+}
+
+/* Tabs carrousel */
+
+.carousel-container {
+    display: flex;
+    align-items: center;
+    overflow-x: hidden;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.tabs {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    padding: 0.5rem 0.5rem;
+    scroll-padding: 0 0.3rem;
+    flex: 1;
+}
+
+.tabs::-webkit-scrollbar {
+    display: none; /* pour cacher la scrollbar sur Chrome */
+}
+
+.tab-btn {
+    max-width: 120px;
+    height: 4rem;
+    position: relative;
+    white-space: normal;
+    padding: 0 1rem;
+    border: none;
+    font-weight: bold;
+    background: #eee;
+    border-radius: 20px;
+    cursor: pointer;
+    scroll-snap-align: start;
+    flex: 0 0 auto; /* Pour garder leur taille (grow, shrink, basis) */
+    /* Ajout du relief */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2),
+                -1px -1px 2px rgba(255, 255, 255, 0.5);
+    transition: all 0.2s ease-in-out;
+}
+
+.tab-btn.active, .tab-btn:hover {
+    background: #66c067;
+    color: white;
+    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2),
+                inset -1px -1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.tab-btn.active {
+    transform: scale(1.1);
+}
+
+.carousel-nav {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0 0.5rem;
+}
+
+/* Hover vert uniquement si pas désactivé */
+.carousel-nav:not(.disabled):hover {
+    color: #008000;
+}
+
+/* Désactivé (grisé) */
+.carousel-nav.disabled {
+    color: gray;
+    cursor: default;
+    pointer-events: none;
+}
+
+/* Scrapped content */
+
+.parc-info {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    visibility: 0;
+    transition: opacity 1s ease, max-height 1s ease;
+    font-size: 1rem;
+}
+
+.parc-info.active {
+    max-height: 1500px; /* Grande valeur pour permettre à l'élément de se déployer */
+    opacity: 1;
+    visibility: 1;
+}
+
+.parc-info img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 0.5em;
+}
+
+.parc-image .copyright {
+    font-size: 0.8em;
+    color: #666;
+    margin-bottom: 0.5rem;
+    padding-right: 0.5rem;
+    text-align: right;
+}
+
+.parc-info section {
+    margin-top: 1.5rem;
+}
+
+.parc-info h1 {
+    font-size: 1.5em;
+}
+
+.parc-info h2 {
+    font-size: 1.3em;
+}
+
+.parc-info h3 {
+    font-size: 1.1rem;
+    color: #008000;
+}
+
+.parc-info h4 {
+    font-weight: normal;
+    font-style: italic;
+    color: #666;
+    margin-top: 0;
+}
+
+.amenagements {
+    list-style: none;
+    padding: 0;
+}
+
+.amenagements li {
+  margin: 5px 0;
+    padding-left: 25px;
+    position: relative;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.amenagements li i {
+  position: absolute;
+  color: #008000;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Accordéon */
+
+.accordion-content {
+    max-height: 0; /* Masque par défaut */
+    opacity: 0;
+    overflow: hidden; /* Masque le contenu supplémentaire */
+    transition: max-height 1s ease, opacity 1s ease;
+}
+
+.accordion-content.active {
+    max-height: 1000px; /* Grande valeur pour permettre au contenu d'être visible */
+    opacity: 1;
+}
+
+.accordion-header {
+    cursor: pointer;
+    padding: 10px;
+    margin: 0px 5px;
+    font-size: 18px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    background: #eee;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2),
+    -1px -1px 2px rgba(255, 255, 255, 0.5);
+    transition: all 0.2s ease-in-out;
+}
+
+.accordion-header:hover, .accordion-header.active {
+    background: #66c067;
+    color: white;
+    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2),
+                inset -1px -1px 2px rgba(255, 255, 255, 0.5);
+}
+
+/* Lien vers les sites */
+
+.source-link {
+    margin-top: 1em;
+}
+
+.source-link a {
+    color: #2266aa;
+    text-decoration: none;
+}
+
+.source-link a:hover {
+    text-decoration: underline;
+}
+
+/* Base Map switcher */
+
+.basemap-switcher {
+    position: absolute;
+    justify-items: right;
+    top: 15px;
+    right: 15px;
+    z-index: 500;
+}
+.basemap-toggle {
+    padding: 4px;
+    width: 80px;
+    height: 80px;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 6px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    border: 2px solid transparent;
+}
+.basemap-options {
+    display: flex;
+    flex-direction: row-reverse; /* droite vers gauche */
+    gap: 5px;
+    margin-top: 5px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.basemap-switcher.active .basemap-options {
+    opacity: 1;
+    pointer-events: auto;
+}
+.basemap-option {
+    padding: 3px;
+    border-radius: 6px;
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+.basemap-option:hover, .basemap-toggle:hover {
+    border-color: #66c067;
+}
+
+/* Pied de page */
+footer {
+    height: 5vh;
+    min-height: 34px ;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #66c067;
+    color: white;
+    padding: 0 20px;
+    z-index: 2000;
+}
+
+#zoom-info {
+    background: #0080006f;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    transition: opacity 0.8s ease,
+}
+
+/* Masquer les copyright sur petits écrans */
+@media (max-width: 768px) {
+
+    footer p {
+        display: none;
+    }
+
+    footer {
+        justify-content: center;
+    }
+}
