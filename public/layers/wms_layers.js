@@ -233,8 +233,6 @@ const lyr_noise_road_ln = new ol.layer.Tile({
   opacity: 1.0
 });
 
-
-
 // === Vérification de la disponibilité du WMS distant ===
 fetch(wmsUrl + '?service=WMS&request=GetCapabilities', { method: 'HEAD' })
   .then(response => {
