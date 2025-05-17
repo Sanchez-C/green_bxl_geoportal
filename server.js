@@ -15,6 +15,7 @@ const port = process.env.PORT || 3000;
 const corsOptions = {
   origin: [
     'http://localhost:3000', 
+    'http://localhost:4200', 
     'http://localhost:8080', 
     'https://green-brussels.duckdns.org' // Ajoute l'IP de ton site AWS
   ],
@@ -211,7 +212,6 @@ app.get('/api/espaces-verts-proximite', async (req, res) => {
   }
 });
 
-
 // server.js ou ton fichier de serveur
 app.get('/api/parc', async (req, res) => {
   const url = req.query.url;
@@ -229,6 +229,32 @@ app.get('/api/parc', async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ error: 'Erreur lors du scraping' });
+  }
+});
+
+app.get('/api/md_green_spaces', async (req, res) => {
+
+  try {
+    const GreenSpacesQuery = `
+      SELECT 
+        md_green_spaces.md_id, 
+        population,
+        gardens_nb, 
+        gardens_rel, 
+        lden,
+        ST_X(ST_Centroid(md_green_spaces.geom)) AS lon, 
+        ST_Y(ST_Centroid(md_green_spaces.geom)) AS lat
+      FROM vector.md_green_spaces
+      JOIN vector.md_population ON md_green_spaces.md_id = md_population.md_id
+      JOIN vector.md_noise ON md_green_spaces.md_id = md_noise.md_id
+      WHERE md_green_spaces.gardens_rel >= 0
+    `;
+
+    const result = await db.query(GreenSpacesQuery);
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Erreur dans /api/md_green_spaces:', err);
+    res.status(500).json({ error: 'Erreur serveur' });
   }
 });
 
