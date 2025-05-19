@@ -165,6 +165,13 @@ header p {
     object-fit: cover; /* L'image est redimensionnée pour couvrir l'intégralité du container sans déformation */
 }
 
+/* RESPONSIVE : Petit écran (tablette & mobile) */
+@media (max-width: 768px) {
+    .image-container {
+        width: 100%;
+    }
+}
+
 /* Search section */
 
 .search-section {
