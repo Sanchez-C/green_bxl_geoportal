@@ -17,7 +17,8 @@ const corsOptions = {
     'http://localhost:3000', 
     'http://localhost:4200', 
     'http://localhost:8080', 
-    'https://green-brussels.duckdns.org' // Ajoute l'IP de ton site AWS
+    'https://green-brussels.duckdns.org', // Ajoute l'IP de ton site AWS
+    'https://green-bxl-angular.onrender.com'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
