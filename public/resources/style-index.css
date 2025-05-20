@@ -1,8 +1,6 @@
-html {
-    font-size: 16px;
-}
 
 body {
+    overflow-x: hidden;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -172,9 +170,16 @@ header p {
     }
 }
 
+@media (max-width: 768px) {
+    .content-section {
+        flex-direction: column;
+    }
+}
+
 /* Search section */
 
 .search-section {
+    width: 100%;
     background-color: #ffffff;
     padding: 2rem;
     padding-bottom: 4rem;
@@ -203,6 +208,7 @@ header p {
 .search-row,
 .distance-row {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 0.75rem;
 }
@@ -216,6 +222,7 @@ header p {
     border: 1px solid #ccc;
     border-radius: 25px;
     width: 300px;
+    max-width: 100%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -228,6 +235,8 @@ header p {
 }
 
 #searchForm button {
+    flex-shrink: 0;
+    max-width: 100%;
     padding: 0.75rem 1.5rem;
     border: none;
     background-color: #66c067;
@@ -241,12 +250,6 @@ header p {
 
 #searchForm button:hover {
     color: #008000;
-}
-
-@media (max-width: 768px) {
-    .content-section {
-        flex-direction: column;
-    }
 }
 
 .error-message {
@@ -271,7 +274,8 @@ header p {
   transform: translateY(-10px);
   pointer-events: none;
   transition: opacity 0.2s ease, transform 0.2s ease;
-  width: 284px; /* même largeur que .search-bar mais sans le padding */
+  width: 100%;
+  max-width: 284px; /* même largeur que .search-bar mais sans le padding */
   position: absolute;
   top: 100%; /* juste sous l'input */
   z-index: 1000;
@@ -295,6 +299,18 @@ header p {
 
 #suggestions li:hover {
   background-color: #f0f0f0;
+}
+
+@media (max-width: 768px) {
+    .search-row,
+    .distance-row {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    #suggestions {
+      max-width: 100%;
+    }
 }
 
 /* Pied de page */
