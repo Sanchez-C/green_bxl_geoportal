@@ -96,6 +96,13 @@
     
     <!-- Scripts -->
     <script src="address_search.js"></script>
-    <script src="resources/qgis2web.js"></script>
+    <script>//Navbar
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navbarMenu = document.querySelector('.navbar-menu');
+
+        menuToggle.addEventListener('click', () => {
+            navbarMenu.classList.toggle('open');
+        });
+    </script>
 </body>
 </html>
