@@ -1,4 +1,4 @@
-function checkAvailabilityWithTimeout(url, onSuccess, onFallback, timeout = 2000) {
+function checkAvailabilityWithTimeout(url, onSuccess, onFallback, timeout = 0) {
     const controller = new AbortController();
     const signal = controller.signal;
     const timeoutId = setTimeout(() => controller.abort(), timeout);

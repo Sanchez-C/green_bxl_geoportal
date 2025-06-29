@@ -252,7 +252,7 @@ fetch(wmsUrl + '?service=WMS&request=GetCapabilities', { method: 'HEAD' })
 
 const controller = new AbortController();
 const signal = controller.signal;
-const timeout = 2000; // Timeout en millisecondes
+const timeout = 0; // Timeout en millisecondes
 
 const timeoutId = setTimeout(() => {
   controller.abort();
